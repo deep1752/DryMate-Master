@@ -68,7 +68,8 @@ const Team = () => {
             <div className="col-4 col-sm-4 col-md-4 col-lg-4" key={trainer.id}>
               <div className="team-item text-center p-2">
                 <img
-                  src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${trainer.image}`}
+                  src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${trainer.image.replace(/^\/?/, '')}`}
+
                   alt={trainer.name}
                   className="rounded-circle shadow mb-2"
                   style={{ width: "100px", height: "100px", objectFit: "cover" }}
