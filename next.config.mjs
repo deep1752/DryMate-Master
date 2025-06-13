@@ -2,7 +2,7 @@
 const nextConfig = {
   trailingSlash: false,
   images: {
-    domains: ['127.0.0.1'], // Allow image loading from this host
+    domains: ['https://drymate-api.onrender.com'], // Allow image loading from this host
   },
 };
 
