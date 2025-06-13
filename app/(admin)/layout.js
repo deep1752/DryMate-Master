@@ -5,32 +5,52 @@ import { AdminProvider } from '@/context/AdminContext';
 import './globals.css';
 import AdminHeader from '@/components/AdminHeader';
 import AdminFooter from '@/components/AdminFooter';
-import { Toaster } from 'sonner'; // ✅ Add this
+import { Toaster } from 'sonner';
+import { useState } from "react";
 
 export default function RootLayout({ children }) {
   const pathname = usePathname();
   const isLoginPage = pathname === '/admin';
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <html lang="en">
       <body className={!isLoginPage ? "admin-layout" : ""}>
         <AdminProvider>
-          <Toaster richColors position="top-center" /> {/* ✅ This is crucial */}
+          <Toaster richColors position="top-center" />
           {isLoginPage ? (
             children
           ) : (
             <div className="admin-dashboard-container">
               <div className="sidebar">
-                <div className="logo">Admin Panel</div>
-                <nav>
+                <div className="mobile-header">
+                  <div className="logo">Admin Panel</div>
+                  <button
+                    className="menu-toggle"
+                    onClick={() => setMenuOpen(!menuOpen)}
+                  >
+                    ☰
+                  </button>
+                </div>
+
+                <nav className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
                   <ul>
-                    <li><Link href="/admin/dashbord">Dashbord</Link></li>
+                    <li><Link href="/admin/dashbord" onClick={() => setMenuOpen(false)}>Dashboard</Link></li>
+                    <li><Link href="/admin/user" onClick={() => setMenuOpen(false)}>Customers</Link></li>
+                    <li><Link href="/admin/product" onClick={() => setMenuOpen(false)}>Products</Link></li>
+                    <li><Link href="/admin/trainers" onClick={() => setMenuOpen(false)}>Team</Link></li>
+                    <li><Link href="/admin/sliders" onClick={() => setMenuOpen(false)}>Sliders</Link></li>
+                  </ul>
+                </nav>
+
+                {/* Desktop Nav */}
+                <nav className="desktop-menu">
+                  <ul>
+                    <li><Link href="/admin/dashbord">Dashboard</Link></li>
                     <li><Link href="/admin/user">Customers</Link></li>
-                    <li><Link href="/admin/product">Products </Link></li>
-                    
+                    <li><Link href="/admin/product">Products</Link></li>
                     <li><Link href="/admin/trainers">Team</Link></li>
                     <li><Link href="/admin/sliders">Sliders</Link></li>
-                 
                   </ul>
                 </nav>
               </div>
