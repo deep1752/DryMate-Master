@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
+
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import * as XLSX from "xlsx";
@@ -237,7 +237,7 @@ export default function SliderManager({ onEdit, onAdd }) {
                     />
                   </td>
                   <td>
-                    <Image
+                    <img
                       src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${slider.image}`}
                       alt={slider.title}
                       width={80}
@@ -245,6 +245,7 @@ export default function SliderManager({ onEdit, onAdd }) {
                       className="slider-image-thumb"
                       style={{ borderRadius: "6px", objectFit: "cover" }}
                     />
+                 
                   </td>
                   <td>{slider.title}</td>
                   <td>{slider.subtitle}</td>
