@@ -68,12 +68,12 @@ const Team = () => {
             <div className="col-4 col-sm-4 col-md-4 col-lg-4" key={trainer.id}>
               <div className="team-item text-center p-2">
                 <img
-                  src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${trainer.image.replace(/^\/?/, '')}`}
-
+                  src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${trainer.image}`}
                   alt={trainer.name}
                   className="rounded-circle shadow mb-2"
                   style={{ width: "100px", height: "100px", objectFit: "cover" }}
                 />
+                
                 <h6 className="text-uppercase mb-0">{trainer.name}</h6>
                 <small className="text-secondary text-uppercase d-block mb-2">
                   {trainer.designation}

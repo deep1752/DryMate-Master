@@ -262,13 +262,19 @@ export default function ProductManager({ onEdit, onAdd }) {
                     />
                   </td>
                   <td>
-                    <Image
+                    {/* <Image
                       src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${product.image}`}
                       alt={product.name}
                       width={80}
                       height={80}
                       className="slider-image-thumb"
                       style={{ borderRadius: "6px", objectFit: "cover" }}
+                    /> */}
+
+                    <img
+                      src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${product.image}`}
+                      alt={product.name}
+                      className="product-image"
                     />
                   </td>
                   <td>{product.name}</td>
