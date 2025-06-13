@@ -8,6 +8,7 @@ import autoTable from "jspdf-autotable";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { toast } from "sonner";
+import Image from "next/image";
 
 export default function ProductManager({ onEdit, onAdd }) {
   const router = useRouter();
@@ -16,6 +17,9 @@ export default function ProductManager({ onEdit, onAdd }) {
   const [loading, setLoading] = useState(true);
   const [selectedIds, setSelectedIds] = useState([]);
   const [selectAll, setSelectAll] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+  const [showDescriptionModal, setShowDescriptionModal] = useState(false);
+
 
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product/get_all`)
@@ -158,6 +162,16 @@ export default function ProductManager({ onEdit, onAdd }) {
   const goBack = () => {
     window.history.back();
   };
+  const handleViewDescription = (product) => {
+    setSelectedProduct(product);
+    setShowDescriptionModal(true);
+  };
+
+  const closeDescriptionModal = () => {
+    setShowDescriptionModal(false);
+    setSelectedProduct(null);
+  };
+
 
   if (loading) {
     return (
@@ -234,7 +248,7 @@ export default function ProductManager({ onEdit, onAdd }) {
             {filteredProducts.length === 0 ? (
               <tr>
                 <td colSpan="9" className="no-users-found">
-                  🔍 No products found matching "{searchTerm}"
+                  {`🔍 No products found matching "${searchTerm}"`}
                 </td>
               </tr>
             ) : (
@@ -248,18 +262,28 @@ export default function ProductManager({ onEdit, onAdd }) {
                     />
                   </td>
                   <td>
-                    <img
+                    <Image
                       src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${product.image}`}
                       alt={product.name}
+                      width={80}
+                      height={80}
                       className="slider-image-thumb"
-                      style={{ width: "80px", borderRadius: "6px" }}
+                      style={{ borderRadius: "6px", objectFit: "cover" }}
                     />
                   </td>
                   <td>{product.name}</td>
                   <td>{product.price}</td>
                   <td>{product.discount}</td>
                   <td>{product.final_price}</td>
-                  <td>{product.discripction}</td>
+                  <td>
+                    <button
+                      className="view-desc-btn"
+                      onClick={() => handleViewDescription(product)}
+                    >
+                      👁️ View
+                    </button>
+                  </td>
+
                   <td>
                     <button
                       className={`status-toggle-btn ${product.status === "active" ? "active" : "inactive"}`}
@@ -287,6 +311,18 @@ export default function ProductManager({ onEdit, onAdd }) {
           </tbody>
         </table>
       </div>
+      {showDescriptionModal && selectedProduct && (
+        <div className="desc-modal-overlay" onClick={closeDescriptionModal}>
+          <div className="desc-modal" onClick={(e) => e.stopPropagation()}>
+            <h3>{selectedProduct.name} - Description</h3>
+            <p>{selectedProduct.discripction}</p>
+            <button className="close-modal-btn" onClick={closeDescriptionModal}>
+              ❌ Close
+            </button>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }

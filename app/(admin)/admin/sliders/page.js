@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import * as XLSX from "xlsx";
@@ -101,8 +102,6 @@ export default function SliderManager({ onEdit, onAdd }) {
     }
   };
 
-
-
   const toggleSelectAll = () => {
     if (selectAll) {
       setSelectedIds([]);
@@ -164,13 +163,6 @@ export default function SliderManager({ onEdit, onAdd }) {
     <div className="product-manager-wrapper">
       <div className="header-bar">
         <div className="product-header">
-          {/* <button
-            type="button"
-            onClick={() => router.push("/admin")}
-            className="back-btn"
-          >
-            ◀ Back
-          </button> */}
           <button onClick={goBack} className="btn-back">⬅️ Back</button>
         </div>
         <h2 className="title">Slider Manager</h2>
@@ -231,7 +223,7 @@ export default function SliderManager({ onEdit, onAdd }) {
             {filteredSliders.length === 0 ? (
               <tr>
                 <td colSpan="6" className="no-users-found">
-                  🔍 No sliders found matching "{searchTerm}"
+                  🔍 No sliders found matching &quot;{searchTerm}&quot;
                 </td>
               </tr>
             ) : (
@@ -245,11 +237,13 @@ export default function SliderManager({ onEdit, onAdd }) {
                     />
                   </td>
                   <td>
-                    <img
+                    <Image
                       src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${slider.image}`}
                       alt={slider.title}
+                      width={80}
+                      height={60}
                       className="slider-image-thumb"
-                      style={{ width: "80px", borderRadius: "6px" }}
+                      style={{ borderRadius: "6px", objectFit: "cover" }}
                     />
                   </td>
                   <td>{slider.title}</td>
@@ -262,8 +256,6 @@ export default function SliderManager({ onEdit, onAdd }) {
                       {slider.status === "active" ? "🟢 Active" : "🔴 Inactive"}
                     </button>
                   </td>
-
-
                   <td className="action-buttons">
                     <Link href={`/admin/sliders/edit/${slider.id}`}>
                       <button className="edit-button" onClick={() => onEdit?.(slider.id)}>

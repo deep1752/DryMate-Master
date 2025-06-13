@@ -107,7 +107,7 @@ const TrainingPage = () => {
                             Our intensive mushroom farming training equips you with complete knowledge from basic cultivation to commercial production.
                         </p>
                         <p>
-                            You'll learn about all aspects of mushroom cultivation including:
+                            You&apos;ll learn about all aspects of mushroom cultivation including:
                         </p>
                         <ul className="mb-4">
                             <li>🍄 Detailed study of Oyster, Button, Milky, Shiitake, and medicinal mushrooms</li>

@@ -8,6 +8,7 @@ import autoTable from "jspdf-autotable";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { toast } from "sonner";
+import Image from "next/image";
 
 export default function TrainerManager({ onEdit, onAdd }) {
   const router = useRouter();
@@ -121,8 +122,8 @@ export default function TrainerManager({ onEdit, onAdd }) {
   };
 
   const goBack = () => {
-        window.history.back();
-    };
+    window.history.back();
+  };
 
   if (loading) {
     return (
@@ -136,9 +137,6 @@ export default function TrainerManager({ onEdit, onAdd }) {
     <div className="product-manager-wrapper">
       <div className="header-bar">
         <div className="product-header">
-          {/* <button onClick={() => router.push("/admin")} className="back-btn">
-            ◀ Back
-          </button> */}
           <button onClick={goBack} className="btn-back">⬅️ Back</button>
         </div>
         <h2 className="title">Trainer Manager</h2>
@@ -197,7 +195,7 @@ export default function TrainerManager({ onEdit, onAdd }) {
             {filteredTrainers.length === 0 ? (
               <tr>
                 <td colSpan="9" className="no-users-found">
-                  🔍 No trainers found matching "{searchTerm}"
+                  {`🔍 No trainers found matching "${searchTerm}"`}
                 </td>
               </tr>
             ) : (
@@ -211,11 +209,14 @@ export default function TrainerManager({ onEdit, onAdd }) {
                     />
                   </td>
                   <td>
-                    <img
+                    <Image
                       src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${trainer.image}`}
                       alt={trainer.name}
+                      width={50}
+                      height={50}
+                      unoptimized
                       className="trainer-img"
-                      style={{ width: "50px", height: "50px", borderRadius: "8px" }}
+                      style={{ borderRadius: "8px" }}
                     />
                   </td>
                   <td>{trainer.name}</td>

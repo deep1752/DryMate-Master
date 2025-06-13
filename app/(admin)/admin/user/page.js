@@ -84,9 +84,7 @@ export default function UserManager({ onEdit, onAdd }) {
   const filteredUsers = sortedUsers
     .filter((user) => user.role === "customer")
     .filter((user) =>
-      `${user.first_name} ${user.last_name}`
-        .toLowerCase()
-        .includes(searchTerm.toLowerCase())
+      `${user.first_name} ${user.last_name}`.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
   const downloadPDF = () => {
@@ -120,17 +118,14 @@ export default function UserManager({ onEdit, onAdd }) {
     );
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Customers");
-    const excelBuffer = XLSX.write(workbook, {
-      bookType: "xlsx",
-      type: "array",
-    });
+    const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
     const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
     saveAs(blob, "customers.xlsx");
   };
 
   const goBack = () => {
-        window.history.back();
-    };
+    window.history.back();
+  };
 
   if (loading) {
     return (
@@ -144,13 +139,6 @@ export default function UserManager({ onEdit, onAdd }) {
     <div className="product-manager-wrapper">
       <div className="header-bar">
         <div className="product-header">
-          {/* <button
-            type="button"
-            onClick={() => router.push("/admin")}
-            className="back-btn"
-          >
-            ◀ Back
-          </button> */}
           <button onClick={goBack} className="btn-back">⬅️ Back</button>
         </div>
         <h2 className="title">Customer Manager</h2>
@@ -213,7 +201,7 @@ export default function UserManager({ onEdit, onAdd }) {
             {filteredUsers.length === 0 ? (
               <tr>
                 <td colSpan="8" className="no-users-found">
-                  🔍 No users found matching "{searchTerm}"
+                  🔍 No users found matching &quot;{searchTerm}&quot;
                 </td>
               </tr>
             ) : (
