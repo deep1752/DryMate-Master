@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import Link from "next/link";
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
@@ -22,35 +23,49 @@ const ProductPage = () => {
   };
 
   return (
-    <div className="product-page">
-      <h1 className="product-heading">Our Products</h1>
-      <div className="product-grid">
-        {products.map(product => (
-          <div className="product-card" key={product.id}>
-            <img
-              src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${product.image}`}
-              alt={product.name}
-              className="product-image"
-            />
-            <div className="product-info">
-              <h2 className="product-name">{product.name}</h2>
-              <p className="product-desc">{product.discripction}</p>
-              <p className="product-price">
-                <span className="original-price">₹{product.price}</span>{' '}
-                <span className="final-price">₹{product.final_price}</span>
-              </p>
-              <p className="product-discount">Save ₹{product.price - product.final_price}</p>
-              <button
-                className="buy-now-btn"
-                onClick={() => handleBuyNow(product)}
-              >
-                Buy Now on WhatsApp
-              </button>
-            </div>
+    <>
+      {/* Hero Start */}
+      <div className="container-fluid bg-primary p-5 bg-hero mb-5">
+        <div className="row py-5">
+          <div className="col-12 text-center">
+            <h1 className="display-2 text-uppercase text-white mb-md-4">Our Products</h1>
+            <Link className="btn btn-primary py-md-3 px-md-5 me-3" href="/">Home</Link>
+            <Link className="btn btn-light py-md-3 px-md-5" href="/blog">Blog</Link>
           </div>
-        ))}
+        </div>
       </div>
-    </div>
+      {/* Hero End */}
+      <div className="product-page">
+        {/* <h1 className="product-heading">Our Products</h1> */}
+        <div className="product-grid">
+          {products.map(product => (
+            <div className="product-card" key={product.id}>
+              <img
+                src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${product.image}`}
+                alt={product.name}
+                className="product-image"
+              />
+              <div className="product-info">
+                <h2 className="product-name">{product.name}</h2>
+                <p className="product-desc">{product.discripction}</p>
+                <p className="product-price">
+                  <span className="original-price">₹{product.price}</span>{' '}
+                  <span className="final-price">₹{product.final_price}</span>
+                </p>
+                <p className="product-discount">Save ₹{product.price - product.final_price}</p>
+                <button
+                  className="buy-now-btn"
+                  onClick={() => handleBuyNow(product)}
+                >
+                  Buy Now on WhatsApp
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </>
+
   );
 };
 

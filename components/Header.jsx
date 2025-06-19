@@ -13,7 +13,6 @@ const Header = () => {
   const pathname = usePathname();
   const [isMobile, setIsMobile] = useState(false);
 
-
   const adminId = 1;
 
   useEffect(() => {
@@ -31,13 +30,15 @@ const Header = () => {
     fetchAdmin();
   }, [adminId]);
 
-
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
+      if (window.innerWidth > 768) {
+        setIsMenuOpen(false);
+      }
     };
 
-    handleResize(); // Set initial state
+    handleResize();
     window.addEventListener("resize", handleResize);
     return () => window.removeEventListener("resize", handleResize);
   }, []);
@@ -46,199 +47,79 @@ const Header = () => {
     return null;
   }
 
-
-
   return (
-    <header className="mushroom-header">
-      {/* Top Contact Bar */}
-      <div className="header-top-bar">
-        <div className="header-contact-info">
-          <div className="contact-item">
-            <span className="contact-icon">✉️</span>
-            <span>{admin.email}</span>
-          </div>
-          <div className="contact-item">
-            <span className="contact-icon">📞</span>
-            <span>{admin.mobile_number}</span>
-          </div>
-        </div>
-
-        <div
-          className="header-social-links"
-          style={{ display: isMobile ? "none" : "flex" }}
-        >
-          {admin.fb_link && (
-            <a
-              href={`https://${admin.fb_link}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-icon facebook"
-            >
-              fb
-            </a>
-          )}
-          {admin.twiter_link && (
-            <a
-              href={`https://${admin.twiter_link}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-icon twitter"
-            >
-              𝕏
-            </a>
-          )}
-          {admin.linkedin_link && (
-            <a
-              href={`https://${admin.linkedin_link}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-icon linkedin"
-            >
-              in
-            </a>
-          )}
-          {admin.insta_link && (
-            <a
-              href={`https://${admin.insta_link}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-icon instagram"
-            >
-              ig
-            </a>
-          )}
-          {admin.youtube_link && (
-            <a
-              href={`https://${admin.youtube_link}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="social-icon youtube"
-            >
-              yt
-            </a>
-          )}
-        </div>
-      </div>
-
+    <header className="mushy-header">
       {/* Main Navigation */}
-      <div className="header-main">
-        <div className="header-logo">
-          <Link href="/">
+      <div className="mushy-header__main">
+        <div className="mushy-header__brand">
+          <Link href="/" className="mushy-header__logo-link">
             <img
               src="/img/logo.png"
               alt="Mushroom Farms Logo"
-              className="logo-image"
+              className="mushy-header__logo-image"
             />
-            <span className="logo-text">{admin.brand_name || "Mushroom Farms"}</span>
+            <span className="mushy-header__logo-text">𝓓𝓻𝔂𝓜𝓪𝓽𝓮 🍄</span>
           </Link>
         </div>
 
         <button
-          className="mobile-menu-button"
+          className={`mushy-header__hamburger ${isMenuOpen ? 'is-active' : ''}`}
           onClick={() => setIsMenuOpen(!isMenuOpen)}
           aria-label="Toggle menu"
         >
-          <div className={`menu-icon ${isMenuOpen ? 'open' : ''}`}>
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
+          <span className="mushy-header__hamburger-box">
+            <span className="mushy-header__hamburger-inner"></span>
+          </span>
         </button>
 
-        <nav className={`header-nav ${isMenuOpen ? 'open' : ''}`}>
-          <ul className="nav-links">
-            <li className="nav-item">
+        <nav className={`mushy-header__nav ${isMenuOpen ? 'is-visible' : ''}`}>
+          <ul className="mushy-header__nav-list">
+            <li className="mushy-header__nav-item">
               <Link
                 href="/"
-                className={`nav-link ${pathname === '/' ? 'active' : ''}`}
+                className={`mushy-header__nav-link ${pathname === '/' ? 'is-active' : ''}`}
                 onClick={() => setIsMenuOpen(false)}
               >
-                <span className="link-icon"></span> Home
+                <span className="mushy-header__link-icon"></span> Home
               </Link>
             </li>
-            <li className="nav-item">
+            <li className="mushy-header__nav-item">
               <Link
                 href="/about"
-                className={`nav-link ${pathname === '/about' ? 'active' : ''}`}
+                className={`mushy-header__nav-link ${pathname === '/about' ? 'is-active' : ''}`}
                 onClick={() => setIsMenuOpen(false)}
               >
-                <span className="link-icon"></span> About
+                <span className="mushy-header__link-icon"></span> About
               </Link>
             </li>
-            <li className="nav-item">
+            <li className="mushy-header__nav-item">
               <Link
                 href="/product"
-                className={`nav-link ${pathname === '/product' ? 'active' : ''}`}
+                className={`mushy-header__nav-link ${pathname === '/product' ? 'is-active' : ''}`}
                 onClick={() => setIsMenuOpen(false)}
               >
-                <span className="link-icon"></span> Products
+                <span className="mushy-header__link-icon"></span> Products
               </Link>
             </li>
-            <li className="nav-item">
-              <Link
-                href="/blog"
-                className={`nav-link ${pathname === '/blog' ? 'active' : ''}`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <span className="link-icon"></span> Blog
-              </Link>
-            </li>
-            <li className="nav-item">
-              <Link
-                href="/team"
-                className={`nav-link ${pathname === '/team' ? 'active' : ''}`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <span className="link-icon"></span> Our Team
-              </Link>
-            </li>
-            <li className="nav-item">
+            <li className="mushy-header__nav-item">
               <Link
                 href="/training"
-                className={`nav-link ${pathname === '/training' ? 'active' : ''}`}
+                className={`mushy-header__nav-link ${pathname === '/training' ? 'is-active' : ''}`}
                 onClick={() => setIsMenuOpen(false)}
               >
-                <span className="link-icon"></span> Training
+                <span className="mushy-header__link-icon"></span> Training
               </Link>
             </li>
-            <li className="nav-item">
+            <li className="mushy-header__nav-item">
               <Link
                 href="/contact"
-                className={`nav-link ${pathname === '/contact' ? 'active' : ''}`}
+                className={`mushy-header__nav-link ${pathname === '/contact' ? 'is-active' : ''}`}
                 onClick={() => setIsMenuOpen(false)}
               >
-                <span className="link-icon"></span> Contact
+                <span className="mushy-header__link-icon"></span> Contact
               </Link>
             </li>
           </ul>
-
-          {/* <div className="header-auth">
-            {user ? (
-              <div className="user-dropdown">
-                <button className="user-button">
-                  <span className="user-avatar">👤</span>
-                  <span className="user-name">{user.first_name || "User"}</span>
-                  <span className="dropdown-arrow">▼</span>
-                </button>
-                <div className="dropdown-menu">
-                  <Link href="/profile" className="dropdown-item" onClick={() => setIsMenuOpen(false)}>
-                    Profile
-                  </Link>
-                  <Link href="/profile/change-password" className="dropdown-item" onClick={() => setIsMenuOpen(false)}>
-                    Change Password
-                  </Link>
-                  <button className="dropdown-item logout" onClick={() => { logout(); setIsMenuOpen(false); }}>
-                    Logout
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <Link href="/join" className="join-button" onClick={() => setIsMenuOpen(false)}>
-                Join Us
-                <span className="button-shine"></span>
-              </Link>
-            )}
-          </div> */}
         </nav>
       </div>
     </header>

@@ -153,6 +153,92 @@ const Home = () => {
 
 
 
+
+
+
+
+
+            <section className="hero-section">
+                <h1 className="hero-title">About Mushroom Farming</h1>
+                <p className="hero-text">
+                    Organic, Sustainable & Profitable Mushroom Cultivation
+                </p>
+
+                <div className="hero-notes">
+                    <div className="note">
+                        <h3>🌱 Eco-Friendly</h3>
+                        <p>Mushrooms can be grown using agricultural waste, reducing environmental impact.</p>
+                    </div>
+                    <div className="note">
+                        <h3>🏡 Small Space, Big Yield</h3>
+                        <p>Requires minimal land and infrastructure for high production.</p>
+                    </div>
+                    <div className="note">
+                        <h3>💰 High Market Demand</h3>
+                        <p>Used in food, medicine, and cosmetics, making it a profitable business.</p>
+                    </div>
+                    <div className="note">
+                        <h3>🍄 Nutrient-Rich</h3>
+                        <p>Loaded with vitamins, proteins, and antioxidants beneficial for health.</p>
+                    </div>
+                    <div className="note">
+                        <h3>📚 Easy to Learn</h3>
+                        <p>Beginner-friendly with numerous training programs available.</p>
+                    </div>
+                </div>
+            </section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+            {/* Program Start */}
+            {/* Services Section */}
+            <section className="about-services">
+                <div className="about-services-container">
+                    <div className="about-service-card">
+                        <div className="about-service-icon">🍄</div>
+                        <h3 className="about-service-title">Training Programs</h3>
+                        <p className="about-service-description">Learn everything about mushroom cultivation, from spawn preparation to post-harvest handling.</p>
+                        <Link href="/training" className="about-service-link">Read More →</Link>
+                    </div>
+
+                    <div className="about-service-card">
+                        <div className="about-service-icon">🧺</div>
+                        <h3 className="about-service-title">Farming Kits</h3>
+                        <p className="about-service-description">Get complete mushroom farming kits with tools, substrate, and guides for beginners and experts.</p>
+                        <Link href="/training" className="about-service-link">Read More →</Link>
+                    </div>
+
+                    <div className="about-service-card">
+                        <div className="about-service-icon">📊</div>
+                        <h3 className="about-service-title">Consulting</h3>
+                        <p className="about-service-description">Need help setting up your mushroom business? We provide expert consulting and site planning services.</p>
+                        <Link href="/training" className="about-service-link">Read More →</Link>
+                    </div>
+                </div>
+
+                <div className="about-services-cta">
+                    <h2 className="about-services-cta-title">Join Our Training & Get Started</h2>
+                    <Link href="/training" className="about-services-cta-button">Start Training</Link>
+                </div>
+            </section>
+
+
+
+
+
             <div className="home-page">
                 <h2 className="section-title">Our Products</h2>
                 <div className="product-slider">
@@ -176,7 +262,7 @@ const Home = () => {
                                     display: "flex",
                                     justifyContent: "center",
                                     alignItems: "center",
-                                  
+
                                 }}
                             >
                                 <button className="buy-now-btn" onClick={() => handleBuyNow(product)}>
@@ -188,47 +274,6 @@ const Home = () => {
                     ))}
                 </div>
             </div>
-
-
-
-
-            {/* Program Start */}
-            {/* Services Section */}
-            <section className="about-services">
-                <div className="about-services-container">
-                    <div className="about-service-card">
-                        <div className="about-service-icon">🍄</div>
-                        <h3 className="about-service-title">Training Programs</h3>
-                        <p className="about-service-description">Learn everything about mushroom cultivation, from spawn preparation to post-harvest handling.</p>
-                        <Link href="#" className="about-service-link">Read More →</Link>
-                    </div>
-
-                    <div className="about-service-card">
-                        <div className="about-service-icon">🧺</div>
-                        <h3 className="about-service-title">Farming Kits</h3>
-                        <p className="about-service-description">Get complete mushroom farming kits with tools, substrate, and guides for beginners and experts.</p>
-                        <Link href="#" className="about-service-link">Read More →</Link>
-                    </div>
-
-                    <div className="about-service-card">
-                        <div className="about-service-icon">📊</div>
-                        <h3 className="about-service-title">Consulting</h3>
-                        <p className="about-service-description">Need help setting up your mushroom business? We provide expert consulting and site planning services.</p>
-                        <Link href="#" className="about-service-link">Read More →</Link>
-                    </div>
-                </div>
-
-                <div className="about-services-cta">
-                    <h2 className="about-services-cta-title">Join Our Training & Get Started</h2>
-                    <Link href="/training" className="about-services-cta-button">Start Training</Link>
-                </div>
-            </section>
-
-
-
-
-
-
 
             {/* Team Start */}
             <div className="container px-2 py-4">

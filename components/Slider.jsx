@@ -4,50 +4,77 @@ import Link from 'next/link';
 import axios from 'axios';
 
 const Slider = () => {
-  const [sliders, setSliders] = useState([]);
+  const [slides, setSlides] = useState([]);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/slider/get`)
       .then(res => {
-        const activeSliders = res.data.filter(slider => slider.status === 'active');
-        setSliders(activeSliders);
+        const activeSlides = res.data.filter(slide => slide.status === 'active');
+        setSlides(activeSlides);
       })
       .catch(err => console.error(err));
   }, []);
 
+  useEffect(() => {
+    if (slides.length > 0) {
+      const interval = setInterval(() => {
+        setActiveIndex((prev) => (prev + 1) % slides.length);
+      }, 5000);
+      return () => clearInterval(interval);
+    }
+  }, [slides]);
+
   return (
-    <div className="container-fluid p-0 mb-5">
-      <div id="header-carousel" className="carousel slide" data-bs-ride="carousel">
-        <div className="carousel-inner">
-          {sliders.map((item, index) => (
-            <div key={item.id} className={`carousel-item ${index === 0 ? 'active' : ''}`}>
-              <img
-                className="w-100 slider-img"
-                src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${item.image}`}
-                alt={item.title}
-              />
-              <div className="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                <div className="p-3" style={{ maxWidth: 900 }}>
-                  {/* <h5 className="text-white text-uppercase">{item.title}</h5>
-                  <h1 className="text-white text-uppercase mb-md-4 small-subtitle">{item.subtitle}</h1> */}
-                  <Link className="btn btn-primary py-md-3 px-md-5 me-3" href="/join">Join Us</Link>
-                  <Link className="btn btn-light py-md-3 px-md-5" href="/contact">Contact Us</Link>
-                </div>
+    <div className="hero-slider">
+      <div className="slide-wrapper">
+        {slides.map((slide, index) => (
+          <div 
+            key={slide.id} 
+            className={`slide-content ${index === activeIndex ? 'active' : ''}`}
+          >
+            <div 
+              className="slide-background"
+              style={{ backgroundImage: `url(${process.env.NEXT_PUBLIC_API_BASE_URL}/${slide.image})` }}
+            ></div>
+            <div className="slide-overlay"></div>
+            <div className="slide-text">
+              <p className="slide-tagline animate-pop-in">{slide.title}</p>
+              {/* <h2 className="slide-heading animate-pop-in delay-1">{slide.subtitle}</h2> */}
+              <div className="slide-actions animate-pop-in delay-2">
+                <Link className="action-btn primary-btn" href="/join">Join Us</Link>
+                <Link className="action-btn secondary-btn" href="/contact">Contact Us</Link>
               </div>
             </div>
-          ))}
-        </div>
-
-        {/* Carousel Controls */}
-        <button className="carousel-control-prev" type="button" data-bs-target="#header-carousel" data-bs-slide="prev">
-          <span className="carousel-control-prev-icon" aria-hidden="true" />
-          <span className="visually-hidden">Previous</span>
-        </button>
-        <button className="carousel-control-next" type="button" data-bs-target="#header-carousel" data-bs-slide="next">
-          <span className="carousel-control-next-icon" aria-hidden="true" />
-          <span className="visually-hidden">Next</span>
-        </button>
+          </div>
+        ))}
       </div>
+
+      <div className="slide-nav">
+        {slides.map((_, index) => (
+          <button
+            key={index}
+            className={`nav-dot ${index === activeIndex ? 'active' : ''}`}
+            onClick={() => setActiveIndex(index)}
+            aria-label={`Go to slide ${index + 1}`}
+          />
+        ))}
+      </div>
+
+      <button 
+        className="nav-arrow prev-arrow"
+        onClick={() => setActiveIndex((prev) => (prev - 1 + slides.length) % slides.length)}
+        aria-label="Previous slide"
+      >
+        &lt;
+      </button>
+      <button 
+        className="nav-arrow next-arrow"
+        onClick={() => setActiveIndex((prev) => (prev + 1) % slides.length)}
+        aria-label="Next slide"
+      >
+        &gt;
+      </button>
     </div>
   );
 };
