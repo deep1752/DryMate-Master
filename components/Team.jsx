@@ -73,7 +73,6 @@ const Team = () => {
                   className="rounded-circle shadow mb-2"
                   style={{ width: "100px", height: "100px", objectFit: "cover" }}
                 />
-                
                 <h6 className="text-uppercase mb-0">{trainer.name}</h6>
                 <small className="text-secondary text-uppercase d-block mb-2">
                   {trainer.designation}

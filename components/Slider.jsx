@@ -28,8 +28,8 @@ const Slider = () => {
               />
               <div className="carousel-caption d-flex flex-column align-items-center justify-content-center">
                 <div className="p-3" style={{ maxWidth: 900 }}>
-                  <h5 className="text-white text-uppercase">{item.title}</h5>
-                  <h1 className="text-white text-uppercase mb-md-4 small-subtitle">{item.subtitle}</h1>
+                  {/* <h5 className="text-white text-uppercase">{item.title}</h5>
+                  <h1 className="text-white text-uppercase mb-md-4 small-subtitle">{item.subtitle}</h1> */}
                   <Link className="btn btn-primary py-md-3 px-md-5 me-3" href="/join">Join Us</Link>
                   <Link className="btn btn-light py-md-3 px-md-5" href="/contact">Contact Us</Link>
                 </div>
