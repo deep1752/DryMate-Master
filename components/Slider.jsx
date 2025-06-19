@@ -20,13 +20,13 @@ const Slider = () => {
     if (slides.length > 0) {
       const interval = setInterval(() => {
         setActiveIndex((prev) => (prev + 1) % slides.length);
-      }, 5000);
+      }, 4000);
       return () => clearInterval(interval);
     }
   }, [slides]);
 
   return (
-    <div className="hero-slider">
+    <div className="hero-slider"style={{ marginTop: '80px' }}>
       <div className="slide-wrapper">
         {slides.map((slide, index) => (
           <div 

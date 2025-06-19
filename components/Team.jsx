@@ -4,15 +4,7 @@ import Link from "next/link";
 import axios from "axios";
 
 const Team = () => {
-  const [trainers, setTrainers] = useState([]);
-
-  useEffect(() => {
-    axios
-      .get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/trainer/get_all`)
-      .then((res) => setTrainers(res.data))
-      .catch((err) => console.error("Error fetching trainers:", err));
-  }, []);
-
+ 
   return (
     <>
       {/* Hero Start */}
@@ -57,58 +49,7 @@ const Team = () => {
       </div>
       {/* End Mushroom Farming Training Section */}
 
-      {/* Team Start */}
-      <div className="container px-2 py-4">
-        <div className="mb-4 text-center">
-          <h5 className="text-primary text-uppercase">The Team</h5>
-          <h1 className="display-6 text-uppercase mb-0">Expert Trainers</h1>
-        </div>
-        <div className="row g-2">
-          {trainers.map((trainer) => (
-            <div className="col-4 col-sm-4 col-md-4 col-lg-4" key={trainer.id}>
-              <div className="team-item text-center p-2">
-                <img
-                  src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${trainer.image}`}
-                  alt={trainer.name}
-                  className="rounded-circle shadow mb-2"
-                  style={{ width: "100px", height: "100px", objectFit: "cover" }}
-                />
-                <h6 className="text-uppercase mb-0">{trainer.name}</h6>
-                <small className="text-secondary text-uppercase d-block mb-2">
-                  {trainer.designation}
-                </small>
-                <div>
-                  <a
-                    className="btn btn-light btn-sm btn-square rounded-circle mx-1"
-                    href={trainer.twitter_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <i className="fab fa-twitter" />
-                  </a>
-                  <a
-                    className="btn btn-light btn-sm btn-square rounded-circle mx-1"
-                    href={trainer.fb_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <i className="fab fa-facebook-f" />
-                  </a>
-                  <a
-                    className="btn btn-light btn-sm btn-square rounded-circle mx-1"
-                    href={trainer.linkedin_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <i className="fab fa-linkedin-in" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-      {/* Team End */}
+      
     </>
   );
 };

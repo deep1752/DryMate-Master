@@ -25,15 +25,17 @@ const ProductPage = () => {
   return (
     <>
       {/* Hero Start */}
-      <div className="container-fluid bg-primary p-5 bg-hero mb-5">
-        <div className="row py-5">
-          <div className="col-12 text-center">
-            <h1 className="display-2 text-uppercase text-white mb-md-4">Our Products</h1>
-            <Link className="btn btn-primary py-md-3 px-md-5 me-3" href="/">Home</Link>
-            <Link className="btn btn-light py-md-3 px-md-5" href="/blog">Blog</Link>
+
+      <div className="about-hero"style={{ marginTop: '80px' }}>
+        <div className="hero-content">
+          <h1>Our Products</h1>
+          <div className="hero-buttons">
+            <Link className="btn home-btn" href="/">Home</Link>
+            <Link className="btn contact-btn" href="/contact">Contact Us</Link>
           </div>
         </div>
       </div>
+
       {/* Hero End */}
       <div className="product-page">
         {/* <h1 className="product-heading">Our Products</h1> */}

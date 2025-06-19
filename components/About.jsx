@@ -2,11 +2,21 @@
 
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
+import axios from "axios";
 
 const About = () => {
   const [adminDetails, setAdminDetails] = useState(null);
   const [trainersCount, setTrainersCount] = useState(0);
   const [activeTab, setActiveTab] = useState('mission');
+  const [trainers, setTrainers] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/trainer/get_all`)
+      .then((res) => setTrainers(res.data))
+      .catch((err) => console.error("Error fetching trainers:", err));
+  }, []);
+
 
   // Fetch admin details
   useEffect(() => {
@@ -41,14 +51,12 @@ const About = () => {
   return (
     <div className="about-page">
       {/* Hero Section */}
-      <div className="container-fluid bg-primary p-5 bg-hero mb-5">
-        <div className="row py-5">
-          <div className="col-12 text-center">
-            <h1 className="display-2 text-uppercase text-white mb-md-4">
-              About Us
-            </h1>
-            <Link className="btn btn-primary py-md-3 px-md-5 me-3" href="/">Home</Link>
-            <Link className="btn btn-light py-md-3 px-md-5" href="/contact">Contact Us</Link>
+      <div className="about-hero"style={{ marginTop: '80px' }}>
+        <div className="hero-content">
+          <h1>About Us</h1>
+          <div className="hero-buttons">
+            <Link className="btn home-btn" href="/">Home</Link>
+            <Link className="btn contact-btn" href="/contact">Contact Us</Link>
           </div>
         </div>
       </div>
@@ -132,7 +140,7 @@ const About = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="about-stats">
+      {/* <section className="about-stats">
         <div className="about-stats-container">
           <div className="about-stat">
             <div className="about-stat-icon">⭐</div>
@@ -174,7 +182,60 @@ const About = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
+
+      {/* Team Start */}
+      <div className="container px-2 py-4">
+        <div className="mb-4 text-center">
+          <h5 className="text-primary text-uppercase">The Team</h5>
+          <h1 className="display-6 text-uppercase mb-0">Expert Trainers</h1>
+        </div>
+        <div className="row g-2">
+          {trainers.map((trainer) => (
+            <div className="col-4 col-sm-4 col-md-4 col-lg-4" key={trainer.id}>
+              <div className="team-item text-center p-2">
+                <img
+                  src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${trainer.image}`}
+                  alt={trainer.name}
+                  className="rounded-circle shadow mb-2"
+                  style={{ width: "100px", height: "100px", objectFit: "cover" }}
+                />
+                <h6 className="text-uppercase mb-0">{trainer.name}</h6>
+                <small className="text-secondary text-uppercase d-block mb-2">
+                  {trainer.designation}
+                </small>
+                <div>
+                  <a
+                    className="btn btn-light btn-sm btn-square rounded-circle mx-1"
+                    href={trainer.twitter_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <i className="fab fa-twitter" />
+                  </a>
+                  <a
+                    className="btn btn-light btn-sm btn-square rounded-circle mx-1"
+                    href={trainer.fb_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <i className="fab fa-facebook-f" />
+                  </a>
+                  <a
+                    className="btn btn-light btn-sm btn-square rounded-circle mx-1"
+                    href={trainer.linkedin_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <i className="fab fa-linkedin-in" />
+                  </a>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+      {/* Team End */}
     </div>
   );
 };

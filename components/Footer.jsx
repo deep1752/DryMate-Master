@@ -28,7 +28,7 @@ const Footer = () => {
 
   return (
     <footer className={`footer ${isVisible ? 'footer-visible' : ''}`}>
-   
+
 
       <div className="footer-content">
         <div className="footer-grid">
@@ -50,26 +50,54 @@ const Footer = () => {
               <div className="contact-icon">📞</div>
               <p>{admin.mobile_number}</p>
             </div>
-            
-            <div className="social-links">
-              {admin.twiter_link && (
-                <a href={`https://${admin.twiter_link}`} target="_blank" rel="noreferrer" className="social-icon twitter">
-                  𝕏
+
+            <div className="social-links-container">
+              {/* {admin.twiter_link && (
+                <a
+                  href={`https://${admin.twiter_link}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="social-link twitter"
+                  aria-label="Twitter"
+                >
+                  <span className="social-icon">𝕏</span>
+                  <span className="social-tooltip">Follow on Twitter</span>
                 </a>
-              )}
+              )} */}
               {admin.fb_link && (
-                <a href={`https://${admin.fb_link}`} target="_blank" rel="noreferrer" className="social-icon facebook">
-                  fb
+                <a
+                  href={`https://${admin.fb_link}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="social-link facebook"
+                  aria-label="Facebook"
+                >
+                  <span className="social-icon">fb</span>
+                  <span className="social-tooltip">Connect on Facebook</span>
                 </a>
               )}
               {admin.linkedin_link && (
-                <a href={`https://${admin.linkedin_link}`} target="_blank" rel="noreferrer" className="social-icon linkedin">
-                  in
+                <a
+                  href={`https://${admin.linkedin_link}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="social-link linkedin"
+                  aria-label="LinkedIn"
+                >
+                  <span className="social-icon">in</span>
+                  <span className="social-tooltip">Connect on LinkedIn</span>
                 </a>
               )}
               {admin.insta_link && (
-                <a href={`https://${admin.insta_link}`} target="_blank" rel="noreferrer" className="social-icon instagram">
-                  ig
+                <a
+                  href={`https://${admin.insta_link}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="social-link instagram"
+                  aria-label="Instagram"
+                >
+                  <span className="social-icon">ig</span>
+                  <span className="social-tooltip">Follow on Instagram</span>
                 </a>
               )}
             </div>
@@ -97,11 +125,11 @@ const Footer = () => {
                   <span className="link-arrow">→</span> Our Mushrooms
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link href="/growing" className="footer-link">
                   <span className="link-arrow">→</span> Growing Guide
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link href="/blog" className="footer-link">
                   <span className="link-arrow">→</span> Mushroom Blog
@@ -118,10 +146,10 @@ const Footer = () => {
             </h4>
             <p className="newsletter-text">Subscribe for seasonal growing tips and special offers!</p>
             <form className="newsletter-form">
-              <input 
-                type="email" 
-                placeholder="Your email" 
-                className="newsletter-input" 
+              <input
+                type="email"
+                placeholder="Your email"
+                className="newsletter-input"
                 required
               />
               <button type="submit" className="newsletter-button">

@@ -5,74 +5,48 @@ import { motion } from "framer-motion";
 
 // Animation variants
 const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
+    hidden: { opacity: 0 },
+    visible: {
+        opacity: 1,
+        transition: {
+            staggerChildren: 0.2,
+        },
     },
-  },
 };
 
 const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      duration: 0.5,
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+        y: 0,
+        opacity: 1,
+        transition: {
+            duration: 0.5,
+        },
     },
-  },
 };
 
 const fadeInVariants = {
-  hidden: { opacity: 0 },
-  visible: { opacity: 1, transition: { duration: 0.8 } },
+    hidden: { opacity: 0 },
+    visible: { opacity: 1, transition: { duration: 0.8 } },
 };
 
 const TrainingPage = () => {
     return (
         <>
             {/* Hero Section */}
-            <motion.div 
-                className="container-fluid bg-primary p-5 bg-hero mb-5"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.8 }}
-            >
-                <div className="row py-5">
-                    <div className="col-12 text-center">
-                        <motion.h1 
-                            className="display-2 text-uppercase text-white mb-md-4"
-                            initial={{ y: -50, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 0.2, duration: 0.8 }}
-                        >
-                            Professional Mushroom Farming Training
-                        </motion.h1>
-                        <motion.p 
-                            className="lead mb-4 text-white"
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.4, duration: 0.8 }}
-                        >
-                            Comprehensive hands-on training in cultivation, processing, and marketing of various mushroom varieties
-                        </motion.p>
-                        <motion.div
-                            initial={{ opacity: 0 }}
-                            animate={{ opacity: 1 }}
-                            transition={{ delay: 0.6, duration: 0.8 }}
-                        >
-                            <Link className="btn btn-primary py-md-3 px-md-5 me-3" href="/">Home</Link>
-                            <Link className="btn btn-light py-md-3 px-md-5" href="/contact">Enroll Now</Link>
-                        </motion.div>
+            <div className="about-hero" style={{ marginTop: '80px' }}>
+                <div className="hero-content">
+                    <h1>Training Programs</h1>
+                    <div className="hero-buttons">
+                        <Link className="btn home-btn" href="/">Home</Link>
+                        <Link className="btn contact-btn" href="/contact">Contact Us</Link>
                     </div>
                 </div>
-            </motion.div>
+            </div>
 
             {/* About Training */}
             <div className="container py-5">
-                <motion.div 
+                <motion.div
                     className="row align-items-center g-5"
                     initial="hidden"
                     whileInView="visible"
@@ -87,7 +61,7 @@ const TrainingPage = () => {
                             whileHover={{ scale: 1.02 }}
                             transition={{ type: "spring", stiffness: 400, damping: 10 }}
                         />
-                        <motion.div 
+                        <motion.div
                             className="mt-4 p-4 bg-light rounded"
                             whileHover={{ y: -5 }}
                             transition={{ type: "spring", stiffness: 300 }}
@@ -116,7 +90,7 @@ const TrainingPage = () => {
                             <li>🏭 Small-scale and commercial production systems</li>
                             <li>📊 Business planning and profitability analysis</li>
                         </ul>
-                        <motion.div 
+                        <motion.div
                             className="alert alert-info"
                             whileHover={{ scale: 1.02 }}
                         >
@@ -129,7 +103,7 @@ const TrainingPage = () => {
             {/* Benefits Section */}
             <div className="container-fluid bg-light py-5">
                 <div className="container">
-                    <motion.h3 
+                    <motion.h3
                         className="text-center text-uppercase mb-5"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -138,7 +112,7 @@ const TrainingPage = () => {
                     >
                         Why Our Training Stands Out
                     </motion.h3>
-                    <motion.div 
+                    <motion.div
                         className="row g-4"
                         initial="hidden"
                         whileInView="visible"
@@ -165,12 +139,12 @@ const TrainingPage = () => {
                                 text: "1-year mentorship including market linkages, buyer contacts, and troubleshooting support."
                             }
                         ].map((item, index) => (
-                            <motion.div 
-                                className="col-md-4 text-center" 
+                            <motion.div
+                                className="col-md-4 text-center"
                                 key={index}
                                 variants={itemVariants}
                             >
-                                <motion.div 
+                                <motion.div
                                     className="p-4 h-100 bg-white rounded shadow-sm"
                                     whileHover={{ y: -10, boxShadow: "0 10px 20px rgba(0,0,0,0.1)" }}
                                     transition={{ type: "spring", stiffness: 300 }}
@@ -187,7 +161,7 @@ const TrainingPage = () => {
 
             {/* Detailed Course Modules */}
             <div className="container py-5">
-                <motion.h3 
+                <motion.h3
                     className="text-uppercase text-center mb-5"
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -196,7 +170,7 @@ const TrainingPage = () => {
                 >
                     Detailed Course Curriculum
                 </motion.h3>
-                <motion.div 
+                <motion.div
                     className="row"
                     initial="hidden"
                     whileInView="visible"
@@ -245,12 +219,12 @@ const TrainingPage = () => {
                             ]
                         }
                     ].map((module, index) => (
-                        <motion.div 
-                            className="col-md-6 mb-4" 
+                        <motion.div
+                            className="col-md-6 mb-4"
                             key={index}
                             variants={itemVariants}
                         >
-                            <motion.div 
+                            <motion.div
                                 className="card h-100"
                                 whileHover={{ y: -5, boxShadow: "0 10px 25px rgba(0,0,0,0.1)" }}
                                 initial={{ opacity: 0, y: 20 }}
@@ -263,8 +237,8 @@ const TrainingPage = () => {
                                 <div className="card-body">
                                     <ul className="list-group list-group-flush">
                                         {module.items.map((item, i) => (
-                                            <motion.li 
-                                                className="list-group-item" 
+                                            <motion.li
+                                                className="list-group-item"
                                                 key={i}
                                                 initial={{ opacity: 0, x: -20 }}
                                                 whileInView={{ opacity: 1, x: 0 }}
@@ -286,7 +260,7 @@ const TrainingPage = () => {
             <div className="container py-5">
                 <div className="row justify-content-center">
                     <div className="col-lg-8">
-                        <motion.div 
+                        <motion.div
                             className="text-center mb-5"
                             initial={{ opacity: 0 }}
                             whileInView={{ opacity: 1 }}
@@ -296,7 +270,7 @@ const TrainingPage = () => {
                             <h3 className="text-uppercase mb-3">Training Investment</h3>
                             <p className="lead">Quality training at an affordable cost with flexible payment options</p>
                         </motion.div>
-                        <motion.div 
+                        <motion.div
                             className="row g-4"
                             initial="hidden"
                             whileInView="visible"
@@ -329,12 +303,12 @@ const TrainingPage = () => {
                                     color: "success"
                                 }
                             ].map((pkg, index) => (
-                                <motion.div 
-                                    className="col-md-6" 
+                                <motion.div
+                                    className="col-md-6"
                                     key={index}
                                     variants={itemVariants}
                                 >
-                                    <motion.div 
+                                    <motion.div
                                         className={`card h-100 border-${pkg.color}`}
                                         whileHover={{ scale: 1.03 }}
                                         transition={{ type: "spring", stiffness: 300 }}
@@ -343,7 +317,7 @@ const TrainingPage = () => {
                                             <h4 className="mb-0">{pkg.type}</h4>
                                         </div>
                                         <div className="card-body">
-                                            <motion.h2 
+                                            <motion.h2
                                                 className="card-title text-center py-3"
                                                 initial={{ scale: 0.9 }}
                                                 whileInView={{ scale: 1 }}
@@ -354,8 +328,8 @@ const TrainingPage = () => {
                                             </motion.h2>
                                             <ul className="list-group list-group-flush mb-4">
                                                 {pkg.features.map((feature, i) => (
-                                                    <motion.li 
-                                                        className="list-group-item" 
+                                                    <motion.li
+                                                        className="list-group-item"
                                                         key={i}
                                                         initial={{ opacity: 0, x: -10 }}
                                                         whileInView={{ opacity: 1, x: 0 }}
@@ -371,7 +345,7 @@ const TrainingPage = () => {
                                 </motion.div>
                             ))}
                         </motion.div>
-                        <motion.div 
+                        <motion.div
                             className="mt-5 text-center"
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
@@ -389,7 +363,7 @@ const TrainingPage = () => {
             {/* FAQ Section */}
             <div className="container-fluid bg-light py-5">
                 <div className="container">
-                    <motion.h3 
+                    <motion.h3
                         className="text-center text-uppercase mb-5"
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -398,8 +372,8 @@ const TrainingPage = () => {
                     >
                         Frequently Asked Questions
                     </motion.h3>
-                    <motion.div 
-                        className="accordion" 
+                    <motion.div
+                        className="accordion"
                         id="faqAccordion"
                         initial="hidden"
                         whileInView="visible"
@@ -424,8 +398,8 @@ const TrainingPage = () => {
                                 answer: "Absolutely! Our post-training support includes farm design consultation, equipment sourcing guidance, and troubleshooting assistance for 6 months (for premium package) or 3 months (for basic package)."
                             }
                         ].map((faq, index) => (
-                            <motion.div 
-                                className="accordion-item" 
+                            <motion.div
+                                className="accordion-item"
                                 key={index}
                                 variants={itemVariants}
                             >
@@ -446,7 +420,7 @@ const TrainingPage = () => {
             </div>
 
             {/* Call to Action */}
-            <motion.div 
+            <motion.div
                 className="container-fluid bg-primary text-white py-5"
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
@@ -454,7 +428,7 @@ const TrainingPage = () => {
                 transition={{ duration: 0.8 }}
             >
                 <div className="container text-center">
-                    <motion.h2 
+                    <motion.h2
                         className="mb-4"
                         initial={{ y: 20, opacity: 0 }}
                         whileInView={{ y: 0, opacity: 1 }}
@@ -463,7 +437,7 @@ const TrainingPage = () => {
                     >
                         Limited Seats Available for Next Batch!
                     </motion.h2>
-                    <motion.p 
+                    <motion.p
                         className="lead mb-5"
                         initial={{ y: 20, opacity: 0 }}
                         whileInView={{ y: 0, opacity: 1 }}
@@ -472,7 +446,7 @@ const TrainingPage = () => {
                     >
                         Join our community of 100+ successful mushroom entrepreneurs
                     </motion.p>
-                    <motion.div 
+                    <motion.div
                         className="d-flex justify-content-center gap-3"
                         initial={{ opacity: 0 }}
                         whileInView={{ opacity: 1 }}

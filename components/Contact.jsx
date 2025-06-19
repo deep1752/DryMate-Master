@@ -22,7 +22,7 @@ const Contact = () => {
         e.preventDefault();
         setLoading(true);
         setAlert({ message: '', type: '' });
-        
+
         try {
             const res = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/contact/`, formData);
             setAlert({
@@ -31,8 +31,8 @@ const Contact = () => {
             });
             setFormData({ name: '', email: '', subject: '', message: '' });
         } catch (err) {
-            const errorMessage = err.response?.data?.detail || 
-                               'Error sending message. Please try again later.';
+            const errorMessage = err.response?.data?.detail ||
+                'Error sending message. Please try again later.';
             setAlert({
                 message: errorMessage,
                 type: 'error'
@@ -45,17 +45,18 @@ const Contact = () => {
     return (
         <>
             {/* Hero Start */}
-            <div className="container-fluid bg-primary p-5 bg-hero mb-5">
-                <div className="row py-5">
-                    <div className="col-12 text-center">
-                        <h1 className="display-2 text-uppercase text-white mb-md-4">Contact</h1>
-                        <Link className="btn btn-primary py-md-3 px-md-5 me-3" href="/">Home</Link>
-                        <Link className="btn btn-light py-md-3 px-md-5" href="about">About Us</Link>
+
+            <div className="about-hero"style={{ marginTop: '80px' }}>
+                <div className="hero-content">
+                    <h1>Contact Us</h1>
+                    <div className="hero-buttons">
+                        <Link className="btn home-btn" href="/">Home</Link>
+                        <Link className="btn contact-btn" href="/about">About Us</Link>
                     </div>
                 </div>
             </div>
             {/* Hero End */}
-            
+
             <div className="container-fluid p-5">
                 <div className="row g-0">
                     <div className="col-lg-6">
@@ -115,9 +116,9 @@ const Contact = () => {
                                         />
                                     </div>
                                     <div className="col-12">
-                                        <button 
-                                            className="btn btn-primary w-100 py-3" 
-                                            type="submit" 
+                                        <button
+                                            className="btn btn-primary w-100 py-3"
+                                            type="submit"
                                             disabled={loading}
                                         >
                                             {loading ? (
