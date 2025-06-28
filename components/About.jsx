@@ -51,12 +51,12 @@ const About = () => {
   return (
     <div className="about-page">
       {/* Hero Section */}
-      <div className="about-hero"style={{ marginTop: '80px' }}>
+      <div className="about-hero" style={{ marginTop: '80px' }}>
         <div className="hero-content">
           <h1>About Us</h1>
           <div className="hero-buttons">
-            <Link className="btn home-btn" href="/">Home</Link>
-            <Link className="btn contact-btn" href="/contact">Contact Us</Link>
+            <Link className="action-btn primary-btn" href="/">Home</Link>
+            <Link className="action-btn secondary-btn" href="/contact">Contact Us</Link>
           </div>
         </div>
       </div>

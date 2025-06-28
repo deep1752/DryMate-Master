@@ -56,9 +56,30 @@ export default function RootLayout({ children }) {
           <Header />
           {children}
           <Footer />
-          <a href="#" className="custom-back-to-top">
-            <i className="bi bi-arrow-up"></i>
-          </a>
+
+          {/* Floating WhatsApp and Call Icons */}
+          <div className="floating-contact-icons">
+            <a
+              href="https://wa.me/8504893778"
+              className="whatsapp-icon"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Chat on WhatsApp"
+            >
+              <i className="bi bi-whatsapp"></i>
+            </a>
+            <a
+              href="tel:8504893778"
+              className="call-icon"
+              aria-label="Call Us"
+            >
+              <i className="bi bi-telephone-fill"></i>
+            </a>
+            <a href="#" className="custom-back-to-top">
+              <i className="bi bi-arrow-up"></i>
+            </a>
+          </div>
+
           <ScriptLoader /> {/* Loads jQuery, Bootstrap, and other JS on client side */}
         </UserProvider>
       </body>

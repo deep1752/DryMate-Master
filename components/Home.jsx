@@ -9,7 +9,7 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useRouter } from "next/navigation";
-
+import { motion } from 'framer-motion';
 
 const Home = () => {
     const [adminDetails, setAdminDetails] = useState(null);
@@ -19,6 +19,25 @@ const Home = () => {
 
     const [products, setProducts] = useState([]);
     const router = useRouter();
+
+    const trainingModules = [
+        {
+            title: "Introduction to Mushroom Cultivation",
+            topics: ["Mushroom biology", "Species selection", "Market overview"]
+        },
+        {
+            title: "Growing Techniques",
+            topics: ["Substrate preparation", "Inoculation methods", "Climate control"]
+        },
+        {
+            title: "Organic Practices",
+            topics: ["Natural pest control", "Sustainable materials", "Certification"]
+        },
+        {
+            title: "Harvest & Post-Harvest",
+            topics: ["Optimal harvesting", "Storage techniques", "Packaging"]
+        }
+    ];
 
     useEffect(() => {
         fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product/get_all`)
@@ -189,20 +208,6 @@ const Home = () => {
             </section>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
             {/* Program Start */}
             {/* Services Section */}
             <section className="about-services">
@@ -225,7 +230,7 @@ const Home = () => {
                         <div className="about-service-icon">📊</div>
                         <h3 className="about-service-title">Consulting</h3>
                         <p className="about-service-description">Need help setting up your mushroom business? We provide expert consulting and site planning services.</p>
-                        <Link href="/training" className="about-service-link">Read More →</Link>
+                        <Link href="/contact" className="about-service-link">Read More →</Link>
                     </div>
                 </div>
 
@@ -234,10 +239,6 @@ const Home = () => {
                     <Link href="/training" className="about-services-cta-button">Start Training</Link>
                 </div>
             </section>
-
-
-
-
 
             <div className="home-page">
                 <h2 className="section-title">Our Products</h2>
@@ -345,208 +346,124 @@ const Home = () => {
                     </div>
                 </div>
             </div>
-            {/* Testimonial End */}
-            {/* Blog Start */}
-            <div className="container-fluid p-5">
-                <div className="mb-5 text-center">
-                    <h5 className="text-primary text-uppercase">Our Blog</h5>
-                    <h1 className="display-3 text-uppercase mb-0">Latest Blog Post</h1>
+
+
+            <section className="program-section">
+                <div className="section-header">
+                    <h2>Our Training Program</h2>
+                    <p>Comprehensive learning for aspiring mushroom farmers</p>
                 </div>
-                <div className="row g-5">
-                    <div className="col-md-4">
-                        <div className="blog-item">
-                            <div className="position-relative overflow-hidden rounded-top" style={{ height: "250px" }}>
-                                <img
-                                    className="img-fluid h-100 w-100"
-                                    src="/img/oyster-mushroom.jpg"
-                                    alt="Oyster mushrooms growing"
-                                    style={{ objectFit: "cover" }}
-                                />
-                            </div>
-                            <div className="bg-dark d-flex align-items-center rounded-bottom p-4">
-                                <div className="flex-shrink-0 text-center text-secondary border-end border-secondary pe-3 me-3">
-                                    <span>15</span>
-                                    <h6 className="text-light text-uppercase mb-0">March</h6>
-                                    <span>2023</span>
-                                </div>
-                                <Link className="h5 text-uppercase text-light" href="/blog">
-                                    Complete Guide to Growing Oyster Mushrooms
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div className="col-md-4">
-                        <div className="blog-item">
-                            <div className="position-relative overflow-hidden rounded-top" style={{ height: "250px" }}>
-                                <img
-                                    className="img-fluid h-100 w-100"
-                                    src="/img/mushroom-substrate.jpg"
-                                    alt="Mushroom substrate preparation"
-                                    style={{ objectFit: "cover" }}
-                                />
-                            </div>
-                            <div className="bg-dark d-flex align-items-center rounded-bottom p-4">
-                                <div className="flex-shrink-0 text-center text-secondary border-end border-secondary pe-3 me-3">
-                                    <span>02</span>
-                                    <h6 className="text-light text-uppercase mb-0">April</h6>
-                                    <span>2023</span>
-                                </div>
-                                <Link className="h5 text-uppercase text-light" href="/blog">
-                                    Best Substrate Recipes for Maximum Yield
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="col-md-4">
-                        <div className="blog-item">
-                            <div className="position-relative overflow-hidden rounded-top" style={{ height: "250px" }}>
-                                <img
-                                    className="img-fluid h-100 w-100"
-                                    src="/img/mushroom-harvest.jpg"
-                                    alt="Harvesting mushrooms"
-                                    style={{ objectFit: "cover" }}
-                                />
-                            </div>
-                            <div className="bg-dark d-flex align-items-center rounded-bottom p-4">
-                                <div className="flex-shrink-0 text-center text-secondary border-end border-secondary pe-3 me-3">
-                                    <span>22</span>
-                                    <h6 className="text-light text-uppercase mb-0">April</h6>
-                                    <span>2023</span>
-                                </div>
-                                <Link className="h5 text-uppercase text-light" href="/blog">
-                                    When and How to Harvest Your Mushrooms
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="col-md-4">
-                        <div className="blog-item">
-                            <div className="position-relative overflow-hidden rounded-top" style={{ height: "250px" }}>
-                                <img
-                                    className="img-fluid h-100 w-100"
-                                    src="/img/mushroom-drying.jpg"
-                                    alt="Drying mushrooms"
-                                    style={{ objectFit: "cover" }}
-                                />
-                            </div>
-                            <div className="bg-dark d-flex align-items-center rounded-bottom p-4">
-                                <div className="flex-shrink-0 text-center text-secondary border-end border-secondary pe-3 me-3">
-                                    <span>05</span>
-                                    <h6 className="text-light text-uppercase mb-0">May</h6>
-                                    <span>2023</span>
-                                </div>
-                                <Link className="h5 text-uppercase text-light" href="/blog">
-                                    Best Methods for Preserving Mushrooms
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="col-md-4">
-                        <div className="blog-item">
-                            <div className="position-relative overflow-hidden rounded-top" style={{ height: "250px" }}>
-                                <img
-                                    className="img-fluid h-100 w-100"
-                                    src="/img/mushroom-marketing.jpg"
-                                    alt="Mushroom products at market"
-                                    style={{ objectFit: "cover" }}
-                                />
-                            </div>
-                            <div className="bg-dark d-flex align-items-center rounded-bottom p-4">
-                                <div className="flex-shrink-0 text-center text-secondary border-end border-secondary pe-3 me-3">
-                                    <span>18</span>
-                                    <h6 className="text-light text-uppercase mb-0">May</h6>
-                                    <span>2023</span>
-                                </div>
-                                <Link className="h5 text-uppercase text-light" href="/blog">
-                                    How to Market Your Mushroom Products
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="col-md-4">
-                        <div className="blog-item">
-                            <div className="position-relative overflow-hidden rounded-top" style={{ height: "250px" }}>
-                                <img
-                                    className="img-fluid h-100 w-100"
-                                    src="/img/testimonial-5.jpg"
-                                    alt="Mushroom farming training"
-                                    style={{ objectFit: "cover" }}
-                                />
-                            </div>
-                            <div className="bg-dark d-flex align-items-center rounded-bottom p-4">
-                                <div className="flex-shrink-0 text-center text-secondary border-end border-secondary pe-3 me-3">
-                                    <span>30</span>
-                                    <h6 className="text-light text-uppercase mb-0">May</h6>
-                                    <span>2023</span>
-                                </div>
-                                <Link className="h5 text-uppercase text-light" href="/blog">
-                                    Upcoming Mushroom Farming Training Programs
-                                </Link>
-                            </div>
-                        </div>
-                    </div>
-
-
+                <div className="program-tabs">
+                    <button
+                        className={activeTab === 'overview' ? 'active' : ''}
+                        onClick={() => setActiveTab('overview')}
+                    >
+                        Overview
+                    </button>
+                    <button
+                        className={activeTab === 'modules' ? 'active' : ''}
+                        onClick={() => setActiveTab('modules')}
+                    >
+                        Modules
+                    </button>
+                    <button
+                        className={activeTab === 'outcomes' ? 'active' : ''}
+                        onClick={() => setActiveTab('outcomes')}
+                    >
+                        Outcomes
+                    </button>
                 </div>
-            </div>
 
-            {/* Blog End */}
+                <div className="tab-content">
+                    {activeTab === 'overview' && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5 }}
+                            className="overview-content"
+                        >
+                            <div className="overview-image">
+                                <img src="/img/mushroom3.jpg" alt="Training Overview" />
+                            </div>
+                            <div className="overview-text">
+                                <h3>Hands-On Learning Experience</h3>
+                                <p>
+                                    Our intensive program combines classroom instruction with practical, hands-on training
+                                    in our state-of-the-art mushroom cultivation facility. You'll learn directly from
+                                    experienced growers who have successfully established their own mushroom farms.
+                                </p>
+                                <ul>
+                                    <li>Small class sizes for personalized attention</li>
+                                    <li>Comprehensive training manual included</li>
+                                    <li>Ongoing mentorship after program completion</li>
+                                </ul>
+                            </div>
+                        </motion.div>
+                    )}
 
+                    {activeTab === 'modules' && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5 }}
+                            className="modules-content"
+                        >
+                            {trainingModules.map((module, index) => (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.1 }}
+                                    className="module-card"
+                                >
+                                    <h3>{module.title}</h3>
+                                    <ul>
+                                        {module.topics.map((topic, i) => (
+                                            <li key={i}>{topic}</li>
+                                        ))}
+                                    </ul>
+                                </motion.div>
+                            ))}
+                        </motion.div>
+                    )}
 
-
-
-            {/* Facts Start */}
-            {/* Stats Section */}
-            {/* <section className="about-stats">
-                <div className="about-stats-container">
-                    <div className="about-stat">
-                        <div className="about-stat-icon">⭐</div>
-                        <div className="about-stat-content">
-                            <span className="about-stat-label">Experience</span>
-                            <span className="about-stat-value">
-                                {adminDetails ? adminDetails.expirence_in_year : '...'}
-                            </span>
-                        </div>
-                    </div>
-
-                    <div className="about-stat">
-                        <div className="about-stat-icon">👥</div>
-                        <div className="about-stat-content">
-                            <span className="about-stat-label">Our Experts</span>
-                            <span className="about-stat-value">
-                                {trainersCount > 0 ? trainersCount : '...'}
-                            </span>
-                        </div>
-                    </div>
-
-                    <div className="about-stat">
-                        <div className="about-stat-icon">✅</div>
-                        <div className="about-stat-content">
-                            <span className="about-stat-label">Projects Done</span>
-                            <span className="about-stat-value">
-                                {adminDetails ? adminDetails.complet_project_numbers : '...'}
-                            </span>
-                        </div>
-                    </div>
-
-                    <div className="about-stat">
-                        <div className="about-stat-icon">😊</div>
-                        <div className="about-stat-content">
-                            <span className="about-stat-label">Happy Clients</span>
-                            <span className="about-stat-value">
-                                {adminDetails ? adminDetails.happy_clint_numbers : '...'}
-                            </span>
-                        </div>
-                    </div>
+                    {activeTab === 'outcomes' && (
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.5 }}
+                            className="outcomes-content"
+                        >
+                            <div className="outcome-item">
+                                <div className="outcome-number">1</div>
+                                <div className="outcome-text">
+                                    <h3>Start Your Own Farm</h3>
+                                    <p>Gain the knowledge and confidence to establish your mushroom cultivation operation</p>
+                                </div>
+                            </div>
+                            <div className="outcome-item">
+                                <div className="outcome-number">2</div>
+                                <div className="outcome-text">
+                                    <h3>Increase Yield</h3>
+                                    <p>Learn techniques to maximize production and minimize losses</p>
+                                </div>
+                            </div>
+                            <div className="outcome-item">
+                                <div className="outcome-number">3</div>
+                                <div className="outcome-text">
+                                    <h3>Market Access</h3>
+                                    <p>Connect with buyers and learn effective marketing strategies</p>
+                                </div>
+                            </div>
+                        </motion.div>
+                    )}
                 </div>
-            </section> */}
-            {/* Facts End */}
+            </section>
             {/* Team Start */}
+
+
+
             <div className="container px-2 py-4">
                 <div className="mb-4 text-center">
                     <h5 className="text-primary text-uppercase">The Team</h5>

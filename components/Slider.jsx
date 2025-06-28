@@ -42,7 +42,7 @@ const Slider = () => {
               <p className="slide-tagline animate-pop-in">{slide.title}</p>
               {/* <h2 className="slide-heading animate-pop-in delay-1">{slide.subtitle}</h2> */}
               <div className="slide-actions animate-pop-in delay-2">
-                <Link className="action-btn primary-btn" href="/join">Join Us</Link>
+                <Link className="action-btn primary-btn" href="/training">Join Trainings</Link>
                 <Link className="action-btn secondary-btn" href="/contact">Contact Us</Link>
               </div>
             </div>

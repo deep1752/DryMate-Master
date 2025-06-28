@@ -26,12 +26,12 @@ const ProductPage = () => {
     <>
       {/* Hero Start */}
 
-      <div className="about-hero"style={{ marginTop: '80px' }}>
+      <div className="about-hero" style={{ marginTop: '80px' }}>
         <div className="hero-content">
           <h1>Our Products</h1>
           <div className="hero-buttons">
-            <Link className="btn home-btn" href="/">Home</Link>
-            <Link className="btn contact-btn" href="/contact">Contact Us</Link>
+            <Link className="action-btn primary-btn" href="/">Home</Link>
+            <Link className="action-btn secondary-btn" href="/contact">Contact Us</Link>
           </div>
         </div>
       </div>

@@ -46,12 +46,12 @@ const Contact = () => {
         <>
             {/* Hero Start */}
 
-            <div className="about-hero"style={{ marginTop: '80px' }}>
+            <div className="about-hero" style={{ marginTop: '80px' }}>
                 <div className="hero-content">
                     <h1>Contact Us</h1>
                     <div className="hero-buttons">
-                        <Link className="btn home-btn" href="/">Home</Link>
-                        <Link className="btn contact-btn" href="/about">About Us</Link>
+                        <Link className="action-btn primary-btn" href="/">Home</Link>
+                        <Link className="action-btn secondary-btn" href="/about">About Us</Link>
                     </div>
                 </div>
             </div>
@@ -133,17 +133,29 @@ const Contact = () => {
                             </form>
                         </div>
                     </div>
-                    <div className="col-lg-6">
-                        <iframe
-                            className="w-100"
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3001156.4288297426!2d-78.01371936852176!3d42.72876761954724!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4ccc4bf0f123a5a9%3A0xddcfc6c1de189567!2sNew%20York%2C%20USA!5e0!3m2!1sen!2sbd!4v1603794290143!5m2!1sen!2sbd"
-                            frameBorder={0}
-                            style={{ height: 457, border: 0 }}
-                            allowFullScreen=""
-                            aria-hidden="false"
-                            tabIndex={0}
-                        />
+                    <div className="col-lg-6 d-flex align-items-center bg-light p-5">
+                        <div>
+                            <h3 className="mb-4 text-dark">Why Choose <span className="text-success">DryMate</span>?</h3>
+                            <ul className="list-unstyled">
+                                <li className="mb-3">
+                                    ✅ <strong>Organic Farming Training:</strong> Learn sustainable mushroom cultivation techniques from experts.
+                                </li>
+                                <li className="mb-3">
+                                    ✅ <strong>Fresh & Dried Mushrooms:</strong> 100% organic, hand-picked, and packaged with care.
+                                </li>
+                                <li className="mb-3">
+                                    ✅ <strong>Certified Quality:</strong> No chemicals, just natural goodness in every product.
+                                </li>
+                                <li className="mb-3">
+                                    ✅ <strong>Mushroom-Based Products:</strong> Try our teas, snacks, powders, and more!
+                                </li>
+                                <li className="mb-3">
+                                    ✅ <strong>Support for Farmers:</strong> We empower local growers with knowledge and market access.
+                                </li>
+                            </ul>
+                        </div>
                     </div>
+
                 </div>
             </div>
         </>
