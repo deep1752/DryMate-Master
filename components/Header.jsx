@@ -57,14 +57,14 @@ const Header = () => {
               src="/img/final-logo.png"
               alt="DryMate Logo"
               style={{
-                width: '130px',
-                height: '130px',
+                width: '100px',
+                height: '100px',
               }}
             />
 
 
 
-            <span style={{ fontWeight: 'bold', color: 'black', marginLeft: '20px' }}>
+            <span style={{ fontWeight: 'bold', color: 'black', marginLeft: '30px' }}>
               <h4>DryMate</h4>
               <h6>We Grow Nature’s Superfood.</h6>
             </span>
