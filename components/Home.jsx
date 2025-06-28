@@ -15,6 +15,7 @@ const Home = () => {
     const [adminDetails, setAdminDetails] = useState(null);
     const [trainersCount, setTrainersCount] = useState(0);
     const [activeTab, setActiveTab] = useState('mission');
+    const [trainingTab, setTrainingTab] = useState('overview'); 
 
 
     const [products, setProducts] = useState([]);
@@ -277,77 +278,6 @@ const Home = () => {
             </div>
 
 
-            {/* Testimonial Section */}
-            {/* <div className="container-fluid p-0 my-5">
-                <div className="row g-0">
-                    <div className="col-lg-6" style={{ minHeight: 500 }}>
-                        <div className="position-relative h-100">
-                            <img
-                                className="position-absolute w-60 h-100"
-                                src="img/testimonial-5.jpg"
-                                style={{ objectFit: "cover" }}
-                            />
-                        </div>
-                    </div>
-                    <div className="col-lg-6 bg-dark p-5">
-                        <div className="mb-5">
-                            <h5 className="text-primary text-uppercase">Testimonial</h5>
-                            <h1 className="display-3 text-uppercase text-light mb-0">
-                                Our Client Say
-                            </h1>
-                            <Slider {...settings}>
-                                {[
-                                    {
-                                        text: "I attended their mushroom cultivation training and it changed my life. Today, I run a successful mushroom business from home. Highly recommended!",
-                                        name: "Anjali Verma",
-                                        role: "Mushroom Grower",
-                                        image: "/img/testimonial-1.jpg",
-                                    },
-                                    {
-                                        text: "Their spawn quality is top-notch and their team is always ready to help. It's been an amazing journey growing mushrooms with their support.",
-                                        name: "Rajesh Kumar",
-                                        role: "Small-Scale Farmer",
-                                        image: "/img/testimonial-2.jpg",
-                                    },
-                                    {
-                                        text: "Great training, clear guidance, and excellent after-support. If you're serious about mushroom farming, this is the place to start.",
-                                        name: "Pooja Sharma",
-                                        role: "Entrepreneur",
-                                        image: "/img/testimonial-1.jpg",
-                                    },
-                                ].map((item, i) => (
-                                    <div key={i} className="testimonial-item">
-                                        <p className="fs-5 fw-normal text-light mb-4">
-                                            <i className="fa fa-quote-left text-primary me-3" />
-                                            {item.text}
-                                        </p>
-                                        <div className="d-flex align-items-center">
-                                            <img
-                                                className="rounded-circle testimonial-img"
-                                                src={item.image}
-                                                alt="client"
-                                            />
-                                            <div className="ps-4">
-                                                <h5 className="text-uppercase text-light mb-1">
-                                                    {item.name}
-                                                </h5>
-                                                <span className="text-uppercase text-secondary">
-                                                    {item.role}
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                ))}
-                            </Slider>
-
-
-                        </div>
-
-                    </div>
-                </div>
-            </div> */}
-
-
             <section className="program-section">
                 <div className="section-header">
                     <h2>Our Training Program</h2>
@@ -356,27 +286,27 @@ const Home = () => {
 
                 <div className="program-tabs">
                     <button
-                        className={activeTab === 'overview' ? 'active' : ''}
-                        onClick={() => setActiveTab('overview')}
+                        className={trainingTab === 'overview' ? 'active' : ''}
+                        onClick={() => setTrainingTab('overview')}
                     >
                         Overview
                     </button>
                     <button
-                        className={activeTab === 'modules' ? 'active' : ''}
-                        onClick={() => setActiveTab('modules')}
+                        className={trainingTab === 'modules' ? 'active' : ''}
+                        onClick={() => setTrainingTab('modules')}
                     >
                         Modules
                     </button>
                     <button
-                        className={activeTab === 'outcomes' ? 'active' : ''}
-                        onClick={() => setActiveTab('outcomes')}
+                        className={trainingTab === 'outcomes' ? 'active' : ''}
+                        onClick={() => setTrainingTab('outcomes')}
                     >
                         Outcomes
                     </button>
                 </div>
 
                 <div className="tab-content">
-                    {activeTab === 'overview' && (
+                    {trainingTab === 'overview' && (
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -402,7 +332,7 @@ const Home = () => {
                         </motion.div>
                     )}
 
-                    {activeTab === 'modules' && (
+                    {trainingTab === 'modules' && (
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}
@@ -428,7 +358,7 @@ const Home = () => {
                         </motion.div>
                     )}
 
-                    {activeTab === 'outcomes' && (
+                    {trainingTab === 'outcomes' && (
                         <motion.div
                             initial={{ opacity: 0 }}
                             animate={{ opacity: 1 }}

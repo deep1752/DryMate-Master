@@ -36,7 +36,6 @@ export default function RootLayout({ children }) {
                 <nav className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
                   <ul>
                     <li><Link href="/admin/dashbord" onClick={() => setMenuOpen(false)}>Dashboard</Link></li>
-                    <li><Link href="/admin/user" onClick={() => setMenuOpen(false)}>Customers</Link></li>
                     <li><Link href="/admin/product" onClick={() => setMenuOpen(false)}>Products</Link></li>
                     <li><Link href="/admin/trainers" onClick={() => setMenuOpen(false)}>Team</Link></li>
                     <li><Link href="/admin/sliders" onClick={() => setMenuOpen(false)}>Sliders</Link></li>
@@ -47,7 +46,7 @@ export default function RootLayout({ children }) {
                 <nav className="desktop-menu">
                   <ul>
                     <li><Link href="/admin/dashbord">Dashboard</Link></li>
-                    <li><Link href="/admin/user">Customers</Link></li>
+                    
                     <li><Link href="/admin/product">Products</Link></li>
                     <li><Link href="/admin/trainers">Team</Link></li>
                     <li><Link href="/admin/sliders">Sliders</Link></li>
