@@ -21,7 +21,7 @@ export default function RootLayout({ children }) {
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <meta name="keywords" content="Free HTML Templates" />
         <meta name="description" content="Free HTML Templates" />
-        <link rel="icon" href="/img/new-logo-2.jpg" />
+        <link rel="icon" href="/img/final-logo.png" />
 
         {/* Google Fonts */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
