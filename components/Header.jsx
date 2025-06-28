@@ -54,11 +54,20 @@ const Header = () => {
         <div className="mushy-header__brand">
           <Link href="/" className="mushy-header__logo-link">
             <img
-              src="/img/logo.png"
+              src="/img/new-logo-2.jpg"
               alt="DryMate Logo"
-              className="mushy-header__logo-image"
+              style={{
+                width: '100px',
+                height: '100px',
+                borderRadius: '50%',
+                objectFit: 'cover'
+              }}
             />
-            <span style={{ fontWeight: 'bold', color: 'black' }}>DryMate</span>
+
+            <span style={{ fontWeight: 'bold', color: 'black', marginLeft: '20px' }}>
+              Organic Mushroom Farming
+            </span>
+
 
           </Link>
         </div>
