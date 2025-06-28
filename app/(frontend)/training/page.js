@@ -242,8 +242,7 @@ const MushroomTrainingPage = () => {
                                     <h3>Hands-On Learning Experience</h3>
                                     <p>
                                         Our intensive program combines classroom instruction with practical, hands-on training
-                                        in our state-of-the-art mushroom cultivation facility. You'll learn directly from
-                                        experienced growers who have successfully established their own mushroom farms.
+                                        in our state-of-the-art mushroom cultivation facility. You&#39;ll learn directly from experienced growers who have successfully established their own mushroom farms.
                                     </p>
                                     <ul>
                                         <li>Small class sizes for personalized attention</li>
