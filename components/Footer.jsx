@@ -38,10 +38,10 @@ const Footer = () => {
               <span className="heading-icon">📬</span>
               Get In Touch
             </h4>
-            <div className="contact-item">
+            {/* <div className="contact-item">
               <div className="contact-icon">📍</div>
               <p>{admin.address}</p>
-            </div>
+            </div> */}
             <div className="contact-item">
               <div className="contact-icon">✉️</div>
               <p>{admin.email}</p>

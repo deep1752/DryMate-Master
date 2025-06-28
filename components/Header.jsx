@@ -4,7 +4,6 @@ import Link from 'next/link';
 import axios from 'axios';
 import { useUser } from '../context/UserContext';
 import { usePathname } from 'next/navigation';
-import Image from 'next/image';
 
 const Header = () => {
   const { user, logout } = useUser();
@@ -54,20 +53,12 @@ const Header = () => {
       <div className="mushy-header__main">
         <div className="mushy-header__brand">
           <Link href="/" className="mushy-header__logo-link">
-            <Image
-              src="/img/drymate-logo.jpg"
-              alt="Drymate Logo"
-              width={120}
-              height={110}
-              style={{
-                borderRadius: '50%',
-                border: '3px solid #25D366',
-                boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
-                objectFit: 'cover',
-              }}
+            <img
+              src="/img/logo.png"
+              alt="DryMate Logo"
+              className="mushy-header__logo-image"
             />
-
-            <span className="mushy-header__logo-text">𝓓𝓻𝔂𝓜𝓪𝓽𝓮 🍄</span>
+            <span className="mushy-header__logo-text">DryMate</span>
           </Link>
         </div>
 

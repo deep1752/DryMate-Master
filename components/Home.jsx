@@ -278,7 +278,7 @@ const Home = () => {
 
 
             {/* Testimonial Section */}
-            <div className="container-fluid p-0 my-5">
+            {/* <div className="container-fluid p-0 my-5">
                 <div className="row g-0">
                     <div className="col-lg-6" style={{ minHeight: 500 }}>
                         <div className="position-relative h-100">
@@ -345,7 +345,7 @@ const Home = () => {
 
                     </div>
                 </div>
-            </div>
+            </div> */}
 
 
             <section className="program-section">
