@@ -58,7 +58,8 @@ const Header = () => {
               alt="DryMate Logo"
               className="mushy-header__logo-image"
             />
-            <span className="mushy-header__logo-text">DryMate</span>
+            <span style={{ fontWeight: 'bold', color: 'black' }}>DryMate</span>
+
           </Link>
         </div>
 
