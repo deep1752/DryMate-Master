@@ -5,18 +5,7 @@ import Link from "next/link";
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
-  const [adminMobile, setAdminMobile] = useState('8504893778'); // <-- Admin number state
-
-  // Fetch Products
-  useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product/get_all`)
-      .then(res => res.json())
-      .then(data => {
-        const activeProducts = data.filter(p => p.status === 'active');
-        setProducts(activeProducts);
-      })
-      .catch(err => console.error('Failed to fetch products:', err));
-  }, []);
+  const [adminMobile, setAdminMobile] = useState('');
 
   // Fetch Admin Details
   useEffect(() => {
@@ -35,16 +24,28 @@ const ProductPage = () => {
     fetchAdminDetails();
   }, []);
 
-  // Buy Now Handler with dynamic mobile
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product/get_all`)
+      .then(res => res.json())
+      .then(data => {
+        const activeProducts = data.filter(p => p.status === 'active');
+        setProducts(activeProducts);
+      })
+      .catch(err => console.error('Failed to fetch products:', err));
+  }, []);
+
   const handleBuyNow = (product) => {
     const message = `Hello, I'm interested in buying:\n\n🛍️ *${product.name}*\n💰 Price: ₹${product.final_price}\n🔖 Save ₹${product.price - product.final_price}\n📝 Description: ${product.discripction}`;
-    const whatsappURL = `https://wa.me/91${adminMobile}?text=${encodeURIComponent(message)}`;
+    const phoneNumber = adminMobile || "8504893778"; // fallback number
+    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappURL, '_blank');
   };
 
+
   return (
     <>
-      {/* Hero Section */}
+      {/* Hero Start */}
+
       <div className="about-hero" style={{ marginTop: '80px' }}>
         <div className="hero-content">
           <h1>Our Products</h1>
@@ -55,8 +56,9 @@ const ProductPage = () => {
         </div>
       </div>
 
-      {/* Product Section */}
+      {/* Hero End */}
       <div className="product-page">
+        {/* <h1 className="product-heading">Our Products</h1> */}
         <div className="product-grid">
           {products.map(product => (
             <div className="product-card" key={product.id}>
@@ -76,7 +78,6 @@ const ProductPage = () => {
                 <button
                   className="buy-now-btn"
                   onClick={() => handleBuyNow(product)}
-                  disabled={!adminMobile}
                 >
                   Buy Now on WhatsApp
                 </button>
@@ -86,6 +87,7 @@ const ProductPage = () => {
         </div>
       </div>
     </>
+
   );
 };
 
