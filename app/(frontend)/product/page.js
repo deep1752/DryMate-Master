@@ -18,23 +18,25 @@ const ProductPage = () => {
       .catch(err => console.error('Failed to fetch products:', err));
   }, []);
 
-  // Fetch admin details (for WhatsApp number)
+
+  // Fetch admin mobile number
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/get_by_id/1`)
-      .then(res => {
-        if (!res.ok) throw new Error(`Status ${res.status}`);
-        return res.json();
-      })
-      .then(data => {
+    const fetchAdminMobile = async () => {
+      try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/get_by_id/1`);
+        const data = await response.json();
         if (data?.mobile_number) {
           const formatted = data.mobile_number.startsWith('91') ? data.mobile_number : `91${data.mobile_number}`;
           setAdminMobile(formatted);
         }
-      })
-      .catch(err => {
-        console.error('Failed to fetch admin mobile number:', err);
-      });
+      } catch (error) {
+        console.error('Failed to fetch admin mobile number:', error);
+      }
+    };
+
+    fetchAdminMobile();
   }, []);
+
 
   const handleBuyNow = (product) => {
     const message = `Hello, I'm interested in buying:\n\n🛍️ *${product.name}*\n💰 Price: ₹${product.final_price}\n🔖 Save ₹${product.price - product.final_price}\n📝 Description: ${product.discripction}`;
