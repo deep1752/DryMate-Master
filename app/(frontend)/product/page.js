@@ -1,51 +1,54 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import Link from "next/link";
+import Link from 'next/link';
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
-  const [adminMobile, setAdminMobile] = useState('');
+  const [adminMobile, setAdminMobile] = useState(process.env.NEXT_PUBLIC_ADMIN_MOBILE || '8504893778');
 
-  // Fetch Admin Details
+  // Fetch admin details if not provided via env
   useEffect(() => {
+    if (process.env.NEXT_PUBLIC_ADMIN_MOBILE) return;
+
     const fetchAdminDetails = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/get_by_id/1`);
-        const data = await response.json();
-        if (data && data.mobile_number) {
-          setAdminMobile(data.mobile_number);
-        }
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/get_by_id/1`);
+        if (!res.ok) throw new Error(`Admin API error: ${res.status}`);
+        const data = await res.json();
+        if (data?.mobile_number) setAdminMobile(data.mobile_number);
       } catch (error) {
-        console.error('Failed to fetch admin details:', error);
+        console.error('Failed to fetch admin mobile:', error);
       }
     };
 
     fetchAdminDetails();
   }, []);
 
+  // Fetch product list
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product/get_all`)
-      .then(res => res.json())
-      .then(data => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product/get_all`);
+        const data = await res.json();
         const activeProducts = data.filter(p => p.status === 'active');
         setProducts(activeProducts);
-      })
-      .catch(err => console.error('Failed to fetch products:', err));
+      } catch (err) {
+        console.error('Failed to fetch products:', err);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
   const handleBuyNow = (product) => {
     const message = `Hello, I'm interested in buying:\n\n🛍️ *${product.name}*\n💰 Price: ₹${product.final_price}\n🔖 Save ₹${product.price - product.final_price}\n📝 Description: ${product.discripction}`;
-    const phoneNumber = adminMobile || "8504893778"; // fallback number
-    const whatsappURL = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    const whatsappURL = `https://wa.me/${adminMobile}?text=${encodeURIComponent(message)}`;
     window.open(whatsappURL, '_blank');
   };
 
-
   return (
     <>
-      {/* Hero Start */}
-
       <div className="about-hero" style={{ marginTop: '80px' }}>
         <div className="hero-content">
           <h1>Our Products</h1>
@@ -56,9 +59,7 @@ const ProductPage = () => {
         </div>
       </div>
 
-      {/* Hero End */}
       <div className="product-page">
-        {/* <h1 className="product-heading">Our Products</h1> */}
         <div className="product-grid">
           {products.map(product => (
             <div className="product-card" key={product.id}>
@@ -75,10 +76,7 @@ const ProductPage = () => {
                   <span className="final-price">₹{product.final_price}</span>
                 </p>
                 <p className="product-discount">Save ₹{product.price - product.final_price}</p>
-                <button
-                  className="buy-now-btn"
-                  onClick={() => handleBuyNow(product)}
-                >
+                <button className="buy-now-btn" onClick={() => handleBuyNow(product)}>
                   Buy Now on WhatsApp
                 </button>
               </div>
@@ -87,7 +85,6 @@ const ProductPage = () => {
         </div>
       </div>
     </>
-
   );
 };
 
