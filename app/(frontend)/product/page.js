@@ -5,7 +5,9 @@ import Link from "next/link";
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
+  const [adminMobile, setAdminMobile] = useState('918504893778'); // fallback
 
+  // Fetch products
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product/get_all`)
       .then(res => res.json())
@@ -16,16 +18,33 @@ const ProductPage = () => {
       .catch(err => console.error('Failed to fetch products:', err));
   }, []);
 
+  // Fetch admin details (for WhatsApp number)
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/get_by_id/1`)
+      .then(res => {
+        if (!res.ok) throw new Error(`Status ${res.status}`);
+        return res.json();
+      })
+      .then(data => {
+        if (data?.mobile_number) {
+          const formatted = data.mobile_number.startsWith('91') ? data.mobile_number : `91${data.mobile_number}`;
+          setAdminMobile(formatted);
+        }
+      })
+      .catch(err => {
+        console.error('Failed to fetch admin mobile number:', err);
+      });
+  }, []);
+
   const handleBuyNow = (product) => {
     const message = `Hello, I'm interested in buying:\n\n🛍️ *${product.name}*\n💰 Price: ₹${product.final_price}\n🔖 Save ₹${product.price - product.final_price}\n📝 Description: ${product.discripction}`;
-    const whatsappURL = `https://wa.me/918504893778?text=${encodeURIComponent(message)}`;
+    const whatsappURL = `https://wa.me/${adminMobile}?text=${encodeURIComponent(message)}`;
     window.open(whatsappURL, '_blank');
   };
 
   return (
     <>
       {/* Hero Start */}
-
       <div className="about-hero" style={{ marginTop: '80px' }}>
         <div className="hero-content">
           <h1>Our Products</h1>
@@ -35,10 +54,9 @@ const ProductPage = () => {
           </div>
         </div>
       </div>
-
       {/* Hero End */}
+
       <div className="product-page">
-        {/* <h1 className="product-heading">Our Products</h1> */}
         <div className="product-grid">
           {products.map(product => (
             <div className="product-card" key={product.id}>
@@ -67,7 +85,6 @@ const ProductPage = () => {
         </div>
       </div>
     </>
-
   );
 };
 
