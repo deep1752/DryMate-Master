@@ -39,10 +39,20 @@ const ProductPage = () => {
 
 
   const handleBuyNow = (product) => {
-    const message = `Hello, I'm interested in buying:\n\n🛍️ *${product.name}*\n💰 Price: ₹${product.final_price}\n🔖 Save ₹${product.price - product.final_price}\n📝 Description: ${product.discripction}`;
+    const message = `
+Hello, I'm interested in buying this product:
+
+*Product:* ${product.name}
+*Price:* ₹${product.final_price}
+*You Save:* ₹${product.price - product.final_price}
+*Description:* ${product.discripction}
+
+Please let me know how to proceed.
+  `;
     const whatsappURL = `https://wa.me/${adminMobile}?text=${encodeURIComponent(message)}`;
     window.open(whatsappURL, '_blank');
   };
+
 
   return (
     <>
