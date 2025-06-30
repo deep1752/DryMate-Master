@@ -15,11 +15,24 @@ export const metadata = {
 
 export default async function RootLayout({ children }) {
   // ✅ Fetch admin details server-side
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/get_by_id/1`, {
-    cache: 'no-store',
-  });
-  const adminData = await res.json();
-  const mobileNumber = adminData?.mobile_number || '8504893778'; // fallback
+  let mobileNumber = '8504893778'; // fallback default
+
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/get_by_id/1`, {
+      cache: 'no-store',
+    });
+
+    if (res.ok) {
+      const data = await res.json();
+      if (data?.mobile_number) {
+        mobileNumber = data.mobile_number;
+      }
+    } else {
+      console.warn(`Admin API responded with status ${res.status}: ${await res.text()}`);
+    }
+  } catch (error) {
+    console.error('Failed to fetch admin details:', error);
+  }
 
   return (
     <html lang="en">
