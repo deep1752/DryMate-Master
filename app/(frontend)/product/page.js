@@ -3,27 +3,12 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 
+import { useAdmin } from '@/context/AdminContext';
+
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
-  const [adminMobile, setAdminMobile] = useState(process.env.NEXT_PUBLIC_ADMIN_MOBILE || '8504893778');
+  const { mobileNumber } = useAdmin();
 
-  // Fetch admin details if not provided via env
-  useEffect(() => {
-    if (process.env.NEXT_PUBLIC_ADMIN_MOBILE) return;
-
-    const fetchAdminDetails = async () => {
-      try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/get_by_id/1`);
-        if (!res.ok) throw new Error(`Admin API error: ${res.status}`);
-        const data = await res.json();
-        if (data?.mobile_number) setAdminMobile(data.mobile_number);
-      } catch (error) {
-        console.error('Failed to fetch admin mobile:', error);
-      }
-    };
-
-    fetchAdminDetails();
-  }, []);
 
   // Fetch product list
   useEffect(() => {
@@ -43,7 +28,7 @@ const ProductPage = () => {
 
   const handleBuyNow = (product) => {
     const message = `Hello, I'm interested in buying:\n\n🛍️ *${product.name}*\n💰 Price: ₹${product.final_price}\n🔖 Save ₹${product.price - product.final_price}\n📝 Description: ${product.discripction}`;
-    const whatsappURL = `https://wa.me/${adminMobile}?text=${encodeURIComponent(message)}`;
+    const whatsappURL = `https://wa.me/${mobileNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappURL, '_blank');
   };
 

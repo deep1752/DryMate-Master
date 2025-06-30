@@ -3,28 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from "next/link";
+import { useAdmin } from '@/context/AdminContext';
+  
 
 const MushroomTrainingPage = () => {
     const [activeTab, setActiveTab] = useState('overview');
-    const [adminMobile, setAdminMobile] = useState(process.env.NEXT_PUBLIC_ADMIN_MOBILE || '8504893778');
+    const { mobileNumber } = useAdmin();
 
-    // Fetch Admin Details
-    useEffect(() => {
-        if (process.env.NEXT_PUBLIC_ADMIN_MOBILE) return;
-
-        const fetchAdminDetails = async () => {
-            try {
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/get_by_id/1`);
-                if (!res.ok) throw new Error(`Admin API error: ${res.status}`);
-                const data = await res.json();
-                if (data?.mobile_number) setAdminMobile(data.mobile_number);
-            } catch (error) {
-                console.error('Failed to fetch admin mobile:', error);
-            }
-        };
-
-        fetchAdminDetails();
-    }, []);
     const trainingModules = [
         {
             title: "Introduction to Mushroom Cultivation",
@@ -78,7 +63,7 @@ const MushroomTrainingPage = () => {
     ];
 
     const redirectToWhatsApp = (message) => {
-        const phoneNumber = adminMobile || "8504893778"; // fallback number
+        const phoneNumber = mobileNumber || "8504893778"; // fallback number
         const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
         window.open(url, '_blank');
     };

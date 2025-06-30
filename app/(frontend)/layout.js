@@ -1,10 +1,14 @@
-// ❌ Do NOT add 'use client' — this must remain a server component
+// app/layout.js or app/(frontend)/layout.js (wherever your layout is)
 
+// ❌ DO NOT make this a client component
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { UserProvider } from '@/context/UserContext';
+import { AdminProvider } from '@/context/AdminContext';
 import { Toaster } from 'sonner';
 import ScriptLoader from '@/components/ScriptLoader';
+import FloatingIcons from '@/components/FloatingIcons'; // ✅ New import
+
 import '../../public/css/style.css';
 import '../../public/css/newStyle.css';
 
@@ -13,27 +17,7 @@ export const metadata = {
   description: 'A modern Mushroom Farming website built with Next.js',
 };
 
-export default async function RootLayout({ children }) {
-  // ✅ Fetch admin details server-side
-  let mobileNumber = '8504893778'; // fallback default
-
-  try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/get_by_id/1`, {
-      cache: 'no-store',
-    });
-
-    if (res.ok) {
-      const data = await res.json();
-      if (data?.mobile_number) {
-        mobileNumber = data.mobile_number;
-      }
-    } else {
-      console.warn(`Admin API responded with status ${res.status}: ${await res.text()}`);
-    }
-  } catch (error) {
-    console.error('Failed to fetch admin details:', error);
-  }
-
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <head>
@@ -69,34 +53,16 @@ export default async function RootLayout({ children }) {
         <link href="/css/bootstrap.min.css" rel="stylesheet" />
         <link href="/css/style.css" rel="stylesheet" />
       </head>
-
       <body>
         <UserProvider>
-          <Toaster position="top-center" richColors />
-          <Header />
-          {children}
-          <Footer />
-
-          {/* ✅ Floating WhatsApp and Call Icons with dynamic number */}
-          <div className="floating-contact-icons">
-            <a
-              href={`https://wa.me/${mobileNumber}`}
-              className="whatsapp-icon"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Chat on WhatsApp"
-            >
-              <i className="bi bi-whatsapp"></i>
-            </a>
-            <a href={`tel:${mobileNumber}`} className="call-icon" aria-label="Call Us">
-              <i className="bi bi-telephone-fill"></i>
-            </a>
-            <a href="#" className="custom-back-to-top">
-              <i className="bi bi-arrow-up"></i>
-            </a>
-          </div>
-
-          <ScriptLoader />
+          <AdminProvider>
+            <Toaster position="top-center" richColors />
+            <Header />
+            {children}
+            <Footer />
+            <FloatingIcons /> {/* ✅ Safe client-side context access */}
+            <ScriptLoader />
+          </AdminProvider>
         </UserProvider>
       </body>
     </html>

@@ -1,69 +1,36 @@
 'use client';
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+
+import React from 'react';
 import Link from 'next/link';
+import { useAdmin } from '@/context/AdminContext'; // ✅ use context
 
 const Footer = () => {
-  const [admin, setAdmin] = useState(null);
-  const adminId = 1;
-  const [isVisible, setIsVisible] = useState(false);
-
-  useEffect(() => {
-    const fetchAdmin = async () => {
-      try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/get_by_id/${adminId}`);
-        setAdmin(res.data);
-        setIsVisible(true);
-      } catch (error) {
-        console.error("Failed to fetch admin data");
-      }
-    };
-
-    fetchAdmin();
-  }, [adminId]);
+  const { admin, mobileNumber } = useAdmin(); // ✅ use from context
 
   if (!admin) {
     return <footer className="footer-loading">Loading footer...</footer>;
   }
 
   return (
-    <footer className={`footer ${isVisible ? 'footer-visible' : ''}`}>
-
-
+    <footer className="footer footer-visible">
       <div className="footer-content">
         <div className="footer-grid">
+
           {/* Contact Info */}
           <div className="footer-section contact-section">
             <h4 className="footer-heading">
-              <span className="heading-icon">📬</span>
-              Get In Touch
+              <span className="heading-icon">📬</span> Get In Touch
             </h4>
-            {/* <div className="contact-item">
-              <div className="contact-icon">📍</div>
-              <p>{admin.address}</p>
-            </div> */}
             <div className="contact-item">
               <div className="contact-icon">✉️</div>
               <p>{admin.email}</p>
             </div>
             <div className="contact-item">
               <div className="contact-icon">📞</div>
-              <p>{admin.mobile_number}</p>
+              <p>{mobileNumber}</p>
             </div>
 
             <div className="social-links-container">
-              {/* {admin.twiter_link && (
-                <a
-                  href={`https://${admin.twiter_link}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="social-link twitter"
-                  aria-label="Twitter"
-                >
-                  <span className="social-icon">𝕏</span>
-                  <span className="social-tooltip">Follow on Twitter</span>
-                </a>
-              )} */}
               {admin.fb_link && (
                 <a
                   href={`https://${admin.fb_link}`}
@@ -106,68 +73,32 @@ const Footer = () => {
           {/* Quick Links */}
           <div className="footer-section links-section">
             <h4 className="footer-heading">
-              <span className="heading-icon">🔗</span>
-              Quick Links
+              <span className="heading-icon">🔗</span> Quick Links
             </h4>
             <ul className="footer-links">
-              <li>
-                <Link href="/" className="footer-link">
-                  <span className="link-arrow">→</span> Home
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="footer-link">
-                  <span className="link-arrow">→</span> About Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/products" className="footer-link">
-                  <span className="link-arrow">→</span> Our Mushrooms
-                </Link>
-              </li>
-              {/* <li>
-                <Link href="/growing" className="footer-link">
-                  <span className="link-arrow">→</span> Growing Guide
-                </Link>
-              </li> */}
-              <li>
-                <Link href="/blog" className="footer-link">
-                  <span className="link-arrow">→</span> Mushroom Blog
-                </Link>
-              </li>
+              <li><Link href="/" className="footer-link"><span className="link-arrow">→</span> Home</Link></li>
+              <li><Link href="/about" className="footer-link"><span className="link-arrow">→</span> About Us</Link></li>
+              <li><Link href="/products" className="footer-link"><span className="link-arrow">→</span> Our Mushrooms</Link></li>
+              <li><Link href="/training" className="footer-link"><span className="link-arrow">→</span> Training Programs</Link></li>
             </ul>
           </div>
 
           {/* Newsletter */}
           <div className="footer-section newsletter-section">
             <h4 className="footer-heading">
-              <span className="heading-icon">📰</span>
-              Mushroom News
+              <span className="heading-icon">📰</span> Mushroom News
             </h4>
             <p className="newsletter-text">Subscribe for seasonal growing tips and special offers!</p>
             <form className="newsletter-form">
-              <input
-                type="email"
-                placeholder="Your email"
-                className="newsletter-input"
-                required
-              />
-              <button type="submit" className="newsletter-button">
-                Subscribe
-                <span className="button-shine"></span>
-              </button>
+              <input type="email" placeholder="Your email" className="newsletter-input" required />
+              <button type="submit" className="newsletter-button">Subscribe<span className="button-shine"></span></button>
             </form>
             <div className="mushroom-facts">
-              <div className="fact-item">
-                <span className="fact-icon">🍄</span>
-                <span>100% Organic</span>
-              </div>
-              <div className="fact-item">
-                <span className="fact-icon">🍄</span>
-                <span>Locally Grown</span>
-              </div>
+              <div className="fact-item"><span className="fact-icon">🍄</span><span>100% Organic</span></div>
+              <div className="fact-item"><span className="fact-icon">🍄</span><span>Locally Grown</span></div>
             </div>
           </div>
+
         </div>
       </div>
 
