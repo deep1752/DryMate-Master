@@ -5,7 +5,7 @@ import Link from "next/link";
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
-  const [adminMobile, setAdminMobile] = useState(''); // <-- Admin number state
+  const [adminMobile, setAdminMobile] = useState('8504893778'); // <-- Admin number state
 
   // Fetch Products
   useEffect(() => {
