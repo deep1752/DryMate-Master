@@ -5,9 +5,9 @@ import Link from "next/link";
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
-  const [adminMobile, setAdminMobile] = useState('918504893778'); // fallback
+  const [adminMobile, setAdminMobile] = useState(''); // <-- Admin number state
 
-  // Fetch products
+  // Fetch Products
   useEffect(() => {
     fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product/get_all`)
       .then(res => res.json())
@@ -18,45 +18,33 @@ const ProductPage = () => {
       .catch(err => console.error('Failed to fetch products:', err));
   }, []);
 
-
-  // Fetch admin mobile number
+  // Fetch Admin Details
   useEffect(() => {
-    const fetchAdminMobile = async () => {
+    const fetchAdminDetails = async () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/get_by_id/1`);
         const data = await response.json();
-        if (data?.mobile_number) {
-          const formatted = data.mobile_number.startsWith('91') ? data.mobile_number : `91${data.mobile_number}`;
-          setAdminMobile(formatted);
+        if (data && data.mobile_number) {
+          setAdminMobile(data.mobile_number);
         }
       } catch (error) {
-        console.error('Failed to fetch admin mobile number:', error);
+        console.error('Failed to fetch admin details:', error);
       }
     };
 
-    fetchAdminMobile();
+    fetchAdminDetails();
   }, []);
 
-
+  // Buy Now Handler with dynamic mobile
   const handleBuyNow = (product) => {
-    const message = `
-Hello, I'm interested in buying this product:
-
-*Product:* ${product.name}
-*Price:* ₹${product.final_price}
-*You Save:* ₹${product.price - product.final_price}
-*Description:* ${product.discripction}
-
-Please let me know how to proceed.
-  `;
-    const whatsappURL = `https://wa.me/${adminMobile}?text=${encodeURIComponent(message)}`;
+    const message = `Hello, I'm interested in buying:\n\n🛍️ *${product.name}*\n💰 Price: ₹${product.final_price}\n🔖 Save ₹${product.price - product.final_price}\n📝 Description: ${product.discripction}`;
+    const whatsappURL = `https://wa.me/91${adminMobile}?text=${encodeURIComponent(message)}`;
     window.open(whatsappURL, '_blank');
   };
 
-
   return (
     <>
-      {/* Hero Start */}
+      {/* Hero Section */}
       <div className="about-hero" style={{ marginTop: '80px' }}>
         <div className="hero-content">
           <h1>Our Products</h1>
@@ -66,8 +54,8 @@ Please let me know how to proceed.
           </div>
         </div>
       </div>
-      {/* Hero End */}
 
+      {/* Product Section */}
       <div className="product-page">
         <div className="product-grid">
           {products.map(product => (
@@ -88,6 +76,7 @@ Please let me know how to proceed.
                 <button
                   className="buy-now-btn"
                   onClick={() => handleBuyNow(product)}
+                  disabled={!adminMobile}
                 >
                   Buy Now on WhatsApp
                 </button>
