@@ -4,7 +4,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { UserProvider } from '@/context/UserContext';
 import { Toaster } from 'sonner';
-import ScriptLoader from '@/components/ScriptLoader'; // 👉 handles all external scripts client-side
+import ScriptLoader from '@/components/ScriptLoader';
 import '../../public/css/style.css';
 import '../../public/css/newStyle.css';
 
@@ -13,7 +13,14 @@ export const metadata = {
   description: 'A modern Mushroom Farming website built with Next.js',
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+  // ✅ Fetch admin details server-side
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/get_by_id/1`, {
+    cache: 'no-store',
+  });
+  const adminData = await res.json();
+  const mobileNumber = adminData?.mobile_number || '8504893778'; // fallback
+
   return (
     <html lang="en">
       <head>
@@ -57,10 +64,10 @@ export default function RootLayout({ children }) {
           {children}
           <Footer />
 
-          {/* Floating WhatsApp and Call Icons */}
+          {/* ✅ Floating WhatsApp and Call Icons with dynamic number */}
           <div className="floating-contact-icons">
             <a
-              href="https://wa.me/8504893778"
+              href={`https://wa.me/${mobileNumber}`}
               className="whatsapp-icon"
               target="_blank"
               rel="noopener noreferrer"
@@ -68,11 +75,7 @@ export default function RootLayout({ children }) {
             >
               <i className="bi bi-whatsapp"></i>
             </a>
-            <a
-              href="tel:8504893778"
-              className="call-icon"
-              aria-label="Call Us"
-            >
+            <a href={`tel:${mobileNumber}`} className="call-icon" aria-label="Call Us">
               <i className="bi bi-telephone-fill"></i>
             </a>
             <a href="#" className="custom-back-to-top">
@@ -80,7 +83,7 @@ export default function RootLayout({ children }) {
             </a>
           </div>
 
-          <ScriptLoader /> {/* Loads jQuery, Bootstrap, and other JS on client side */}
+          <ScriptLoader />
         </UserProvider>
       </body>
     </html>

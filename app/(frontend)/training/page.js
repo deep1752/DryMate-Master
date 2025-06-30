@@ -1,11 +1,29 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from "next/link";
 
 const MushroomTrainingPage = () => {
     const [activeTab, setActiveTab] = useState('overview');
+     const [adminMobile, setAdminMobile] = useState('');
+
+    // Fetch Admin Details
+    useEffect(() => {
+        const fetchAdminDetails = async () => {
+            try {
+                const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/get_by_id/1`);
+                const data = await response.json();
+                if (data && data.mobile_number) {
+                    setAdminMobile(data.mobile_number);
+                }
+            } catch (error) {
+                console.error('Failed to fetch admin details:', error);
+            }
+        };
+
+        fetchAdminDetails();
+    }, []);
 
     const trainingModules = [
         {
@@ -59,11 +77,12 @@ const MushroomTrainingPage = () => {
         }
     ];
 
-    const redirectToWhatsApp = (message) => {
-        const phoneNumber = "8504893778";
+       const redirectToWhatsApp = (message) => {
+        const phoneNumber = adminMobile || "8504893778"; // fallback number
         const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
         window.open(url, '_blank');
     };
+
 
     return (
         <>
