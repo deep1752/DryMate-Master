@@ -3,10 +3,11 @@
 import Link from 'next/link';
 
 export default function AdminFooter() {
+      
     return (
         <footer className="adminFooter">
             <div className="footerContent">
-                <p>© {new Date().getFullYear()} Your Company Name. All rights reserved.</p>
+                <p> © {new Date().getFullYear()} { 'DryMate Mushroom'}. All rights reserved.</p>
                 <div className="footerLinks">
                     <Link href="/admin/privacy">Privacy Policy</Link>
                     <Link href="/admin/terms">Terms of Service</Link>

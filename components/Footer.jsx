@@ -105,7 +105,7 @@ const Footer = () => {
       <div className="footer-bottom">
         <div className="footer-bottom-content">
           <p className="copyright">
-            © {new Date().getFullYear()} {admin.brand_name || 'Mushroom Magic'}. All rights reserved.
+            © {new Date().getFullYear()} {admin.brand_name || 'DryMate Mushroom'}. All rights reserved.
           </p>
           <div className="payment-methods">
             <span className="payment-icon">💳</span>

@@ -3041,3 +3041,128 @@ membership view btn  */
     }
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* dashbord  */
+
+
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.dashboard-title {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 2.5rem;
+  color: #333;
+}
+
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+.dashboard-card {
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.dashboard-card h2 {
+  font-size: 1.3rem;
+  color: #222;
+  margin-bottom: 1rem;
+}
+
+.card-stats {
+  margin-bottom: 1rem;
+}
+
+.card-stats p {
+  margin: 0.4rem 0;
+  font-size: 1rem;
+}
+
+.active-text {
+  color: green;
+}
+
+.inactive-text {
+  color: red;
+}
+
+.dashboard-btn {
+  display: inline-block;
+  padding: 0.5rem 1.3rem;
+  background-color: #0070f3;
+  color: #fff;
+  border-radius: 25px;
+  text-decoration: none;
+  transition: background-color 0.3s ease;
+}
+
+.dashboard-btn:hover {
+  background-color: #0059c1;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .dashboard-card {
+    padding: 1.5rem;
+  }
+
+  .dashboard-card h2 {
+    font-size: 1.1rem;
+  }
+
+  .card-stats p {
+    font-size: 0.9rem;
+  }
+
+  .dashboard-btn {
+    font-size: 0.9rem;
+    padding: 0.4rem 1.1rem;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+

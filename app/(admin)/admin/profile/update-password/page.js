@@ -61,7 +61,7 @@ export default function ChangePassword() {
       );
 
       toast.success('Password changed successfully!');
-      router.push('/admin/profile');
+      router.push('/admin/dashbord');
     } catch (error) {
       console.error(error);
       toast.error('Failed to change password.');
