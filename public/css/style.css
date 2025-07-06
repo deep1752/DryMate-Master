@@ -735,7 +735,7 @@ body {
 
 h1 {
   font-size: 2rem;
-  color: var(--secondary);
+  color:#fff;
   margin-bottom: 0.5rem;
   font-weight: 700;
 }
@@ -2631,8 +2631,7 @@ heroes section  */
   position: relative;
   width: 100%;
   min-height: 400px;
-  background-image: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-    url('/img/hero.jpg');
+  background-image:url('/img/hero.jpg');
   background-size: cover;
   background-position: center;
   display: flex;
@@ -2717,12 +2716,12 @@ heroes section  */
 
 /* Responsive Design */
 @media (max-width: 992px) {
-  .about-hero {
+  /* .about-hero {
     min-height: 400px;
-  }
+  } */
 
   .about-hero h1 {
-    font-size: 3rem;
+    font-size: 2rem;
   }
 }
 
