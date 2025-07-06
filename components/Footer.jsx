@@ -78,7 +78,7 @@ const Footer = () => {
             <ul className="footer-links">
               <li><Link href="/" className="footer-link"><span className="link-arrow">→</span> Home</Link></li>
               <li><Link href="/about" className="footer-link"><span className="link-arrow">→</span> About Us</Link></li>
-              <li><Link href="/products" className="footer-link"><span className="link-arrow">→</span> Our Mushrooms</Link></li>
+              <li><Link href="/product" className="footer-link"><span className="link-arrow">→</span> Our Mushrooms</Link></li>
               <li><Link href="/training" className="footer-link"><span className="link-arrow">→</span> Training Programs</Link></li>
             </ul>
           </div>
