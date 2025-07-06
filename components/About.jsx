@@ -188,7 +188,7 @@ const About = () => {
       <div className="container px-2 py-4">
         <div className="mb-4 text-center">
           <h5 className="text-primary text-uppercase">The Team</h5>
-          <h1 className="display-6 text-uppercase mb-0">Expert Trainers</h1>
+          <h2 className="display-6 text-uppercase mb-0">Expert Trainers</h2>
         </div>
         <div className="row g-2">
           {trainers.map((trainer) => (
