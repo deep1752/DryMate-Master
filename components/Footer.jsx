@@ -42,16 +42,7 @@ const Footer = () => {
                   <span className="social-icon">in</span>
                 </a>
               )}
-              {/* {admin?.twiter_link && (
-                <a href={admin.twiter_link} target="_blank" rel="noreferrer" className="social-link twitter" aria-label="Twitter">
-                  <span className="social-icon">tw</span>
-                </a>
-              )}
-              {admin?.youtube_link && (
-                <a href={admin.youtube_link} target="_blank" rel="noreferrer" className="social-link youtube" aria-label="YouTube">
-                  <span className="social-icon">yt</span>
-                </a>
-              )} */}
+          
             </div>
           </div>
 
