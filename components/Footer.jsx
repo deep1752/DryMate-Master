@@ -2,14 +2,10 @@
 
 import React from 'react';
 import Link from 'next/link';
-import { useAdmin } from '@/context/AdminContext'; // ✅ use context
+import { useAdmin } from '@/context/AdminContext';
 
 const Footer = () => {
-  const { admin, mobileNumber } = useAdmin(); // ✅ use from context
-
-  if (!admin) {
-    return <footer className="footer-loading">Loading footer...</footer>;
-  }
+  const { admin, mobileNumber } = useAdmin();
 
   return (
     <footer className="footer footer-visible">
@@ -23,15 +19,15 @@ const Footer = () => {
             </h4>
             <div className="contact-item">
               <div className="contact-icon">✉️</div>
-              <p>{admin.email}</p>
+              <p>{admin?.email || 'info@drymate.com'}</p>
             </div>
             <div className="contact-item">
               <div className="contact-icon">📞</div>
-              <p>{mobileNumber}</p>
+              <p>{mobileNumber || '91 9636642396'}</p>
             </div>
 
             <div className="social-links-container">
-              {admin.fb_link && (
+              {admin?.fb_link && (
                 <a
                   href={`https://${admin.fb_link}`}
                   target="_blank"
@@ -43,7 +39,7 @@ const Footer = () => {
                   <span className="social-tooltip">Connect on Facebook</span>
                 </a>
               )}
-              {admin.linkedin_link && (
+              {admin?.linkedin_link && (
                 <a
                   href={`https://${admin.linkedin_link}`}
                   target="_blank"
@@ -55,7 +51,7 @@ const Footer = () => {
                   <span className="social-tooltip">Connect on LinkedIn</span>
                 </a>
               )}
-              {admin.insta_link && (
+              {admin?.insta_link && (
                 <a
                   href={`https://${admin.insta_link}`}
                   target="_blank"
@@ -91,7 +87,9 @@ const Footer = () => {
             <p className="newsletter-text">Subscribe for seasonal growing tips and special offers!</p>
             <form className="newsletter-form">
               <input type="email" placeholder="Your email" className="newsletter-input" required />
-              <button type="submit" className="newsletter-button">Subscribe<span className="button-shine"></span></button>
+              <button type="submit" className="newsletter-button">
+                Subscribe<span className="button-shine"></span>
+              </button>
             </form>
             <div className="mushroom-facts">
               <div className="fact-item"><span className="fact-icon">🍄</span><span>100% Organic</span></div>
@@ -105,7 +103,7 @@ const Footer = () => {
       <div className="footer-bottom">
         <div className="footer-bottom-content">
           <p className="copyright">
-            © {new Date().getFullYear()} {admin.brand_name || 'DryMate Mushroom'}. All rights reserved.
+            © {new Date().getFullYear()} {admin?.brand_name || 'DryMate Mushroom'}. All rights reserved.
           </p>
           <div className="payment-methods">
             <span className="payment-icon">💳</span>
