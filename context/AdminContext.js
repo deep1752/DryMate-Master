@@ -13,7 +13,6 @@ export const AdminProvider = ({ children }) => {
   const [mobileNumber, setMobileNumber] = useState(process.env.NEXT_PUBLIC_ADMIN_MOBILE || '8504893778');
 
   useEffect(() => {
-    // Restore admin session
     const storedAdmin = localStorage.getItem('admin_user');
     const storedToken = localStorage.getItem('admin_token');
     if (storedAdmin && storedToken) {
@@ -21,17 +20,19 @@ export const AdminProvider = ({ children }) => {
       setToken(storedToken);
     }
 
-    // Fetch admin mobile number if not set via env
-    if (!process.env.NEXT_PUBLIC_ADMIN_MOBILE) {
-      fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/get_by_id/1`)
-        .then(res => res.json())
-        .then(data => {
-          if (data?.mobile_number) {
-            setMobileNumber(data.mobile_number);
-          }
-        })
-        .catch(err => console.error('Failed to fetch admin mobile:', err));
-    }
+    // Always fetch full admin data from backend
+    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/get_by_id/1`)
+      .then(res => res.json())
+      .then(data => {
+        if (data?.mobile_number) {
+          setMobileNumber(data.mobile_number);
+        }
+        if (data) {
+          setAdmin(data);
+          localStorage.setItem('admin_user', JSON.stringify(data));
+        }
+      })
+      .catch(err => console.error('Failed to fetch admin data:', err));
   }, []);
 
   const login = (adminData, accessToken) => {

@@ -23,46 +23,35 @@ const Footer = () => {
             </div>
             <div className="contact-item">
               <div className="contact-icon">📞</div>
-              <p>{mobileNumber || '91 9636642396'}</p>
+              <p>{mobileNumber}</p>
             </div>
 
             <div className="social-links-container">
               {admin?.fb_link && (
-                <a
-                  href={`https://${admin.fb_link}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="social-link facebook"
-                  aria-label="Facebook"
-                >
+                <a href={admin.fb_link} target="_blank" rel="noreferrer" className="social-link facebook" aria-label="Facebook">
                   <span className="social-icon">fb</span>
-                  <span className="social-tooltip">Connect on Facebook</span>
-                </a>
-              )}
-              {admin?.linkedin_link && (
-                <a
-                  href={`https://${admin.linkedin_link}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="social-link linkedin"
-                  aria-label="LinkedIn"
-                >
-                  <span className="social-icon">in</span>
-                  <span className="social-tooltip">Connect on LinkedIn</span>
                 </a>
               )}
               {admin?.insta_link && (
-                <a
-                  href={`https://${admin.insta_link}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="social-link instagram"
-                  aria-label="Instagram"
-                >
+                <a href={admin.insta_link} target="_blank" rel="noreferrer" className="social-link instagram" aria-label="Instagram">
                   <span className="social-icon">ig</span>
-                  <span className="social-tooltip">Follow on Instagram</span>
                 </a>
               )}
+              {admin?.linkedin_link && (
+                <a href={admin.linkedin_link} target="_blank" rel="noreferrer" className="social-link linkedin" aria-label="LinkedIn">
+                  <span className="social-icon">in</span>
+                </a>
+              )}
+              {/* {admin?.twiter_link && (
+                <a href={admin.twiter_link} target="_blank" rel="noreferrer" className="social-link twitter" aria-label="Twitter">
+                  <span className="social-icon">tw</span>
+                </a>
+              )}
+              {admin?.youtube_link && (
+                <a href={admin.youtube_link} target="_blank" rel="noreferrer" className="social-link youtube" aria-label="YouTube">
+                  <span className="social-icon">yt</span>
+                </a>
+              )} */}
             </div>
           </div>
 
@@ -82,7 +71,7 @@ const Footer = () => {
           {/* Newsletter */}
           <div className="footer-section newsletter-section">
             <h4 className="footer-heading">
-              <span className="heading-icon">📰</span> Mushroom News
+              <span className="heading-icon">📰</span> {admin?.brand_name || 'DryMate Mushrooms'}
             </h4>
             <p className="newsletter-text">Subscribe for seasonal growing tips and special offers!</p>
             <form className="newsletter-form">
@@ -103,13 +92,8 @@ const Footer = () => {
       <div className="footer-bottom">
         <div className="footer-bottom-content">
           <p className="copyright">
-            © {new Date().getFullYear()} {admin?.brand_name || 'DryMate Mushroom'}. All rights reserved.
+            © {new Date().getFullYear()} {admin?.brand_name || 'DryMate Mushrooms'}. All rights reserved.
           </p>
-          <div className="payment-methods">
-            <span className="payment-icon">💳</span>
-            <span className="payment-icon">💰</span>
-            <span className="payment-icon">📱</span>
-          </div>
         </div>
       </div>
     </footer>
