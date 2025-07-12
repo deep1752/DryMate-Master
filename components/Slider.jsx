@@ -6,17 +6,14 @@ import axios from 'axios';
 const Slider = () => {
   const [slides, setSlides] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [loading, setLoading] = useState(true); // loader state
 
   useEffect(() => {
-    axios
-      .get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/slider/get`)
-      .then((res) => {
-        const activeSlides = res.data.filter((slide) => slide.status === 'active');
+    axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/slider/get`)
+      .then(res => {
+        const activeSlides = res.data.filter(slide => slide.status === 'active');
         setSlides(activeSlides);
       })
-      .catch((err) => console.error(err))
-      .finally(() => setLoading(false));
+      .catch(err => console.error(err));
   }, []);
 
   useEffect(() => {
@@ -28,48 +25,25 @@ const Slider = () => {
     }
   }, [slides]);
 
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="loader spinner-border animate-spin w-10 h-10 border-4 border-blue-500 border-t-transparent rounded-full"></div>
-      </div>
-
-    );
-  }
-
-  if (slides.length === 0) {
-    return (
-      <div className="text-center py-10 text-gray-500">
-        No active slides available.
-      </div>
-    );
-  }
-
   return (
-    <div className="hero-slider" style={{ marginTop: '80px' }}>
+    <div className="hero-slider"style={{ marginTop: '80px' }}>
       <div className="slide-wrapper">
         {slides.map((slide, index) => (
-          <div
-            key={slide.id}
+          <div 
+            key={slide.id} 
             className={`slide-content ${index === activeIndex ? 'active' : ''}`}
           >
-            <div
+            <div 
               className="slide-background"
-              style={{
-                backgroundImage: `url(${process.env.NEXT_PUBLIC_API_BASE_URL}/${slide.image})`,
-              }}
+              style={{ backgroundImage: `url(${process.env.NEXT_PUBLIC_API_BASE_URL}/${slide.image})` }}
             ></div>
             <div className="slide-overlay"></div>
             <div className="slide-text">
               <p className="slide-tagline animate-pop-in">{slide.title}</p>
               {/* <h2 className="slide-heading animate-pop-in delay-1">{slide.subtitle}</h2> */}
               <div className="slide-actions animate-pop-in delay-2">
-                <Link className="action-btn primary-btn" href="/training">
-                  Join Trainings
-                </Link>
-                <Link className="action-btn secondary-btn" href="/contact">
-                  Contact Us
-                </Link>
+                <Link className="action-btn primary-btn" href="/training">Join Trainings</Link>
+                <Link className="action-btn secondary-btn" href="/contact">Contact Us</Link>
               </div>
             </div>
           </div>
@@ -87,14 +61,14 @@ const Slider = () => {
         ))}
       </div>
 
-      <button
+      <button 
         className="nav-arrow prev-arrow"
         onClick={() => setActiveIndex((prev) => (prev - 1 + slides.length) % slides.length)}
         aria-label="Previous slide"
       >
         &lt;
       </button>
-      <button
+      <button 
         className="nav-arrow next-arrow"
         onClick={() => setActiveIndex((prev) => (prev + 1) % slides.length)}
         aria-label="Next slide"
@@ -106,3 +80,5 @@ const Slider = () => {
 };
 
 export default Slider;
+
+

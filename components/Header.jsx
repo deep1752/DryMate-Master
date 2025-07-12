@@ -21,7 +21,7 @@ const Header = () => {
   }, []);
 
   return (
-    <header className="mushy-header">
+    <header className="mushy-header ">
       <div className="mushy-header__main">
         <div className="mushy-header__brand">
           <Link href="/" className="mushy-header__logo-link">
