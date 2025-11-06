@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { toast } from "sonner";
+import { productsAPI, getImageUrl, handleApiError } from '@/lib/api';
 
 export default function EditProduct() {
   const [formData, setFormData] = useState({
@@ -24,29 +25,31 @@ export default function EditProduct() {
   useEffect(() => {
     if (!productId) return;
 
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product/get_by_id${productId}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch product");
-        return res.json();
-      })
-      .then((product) => {
+    const fetchProduct = async () => {
+      try {
+        const response = await productsAPI.getById(productId);
+        const product = response.data.product || response.data;
+        
         setFormData({
           name: product.name || "",
           price: product.price || "",
           discount: product.discount || "",
-          final_price: product.final_price || "",
-          discripction: product.discripction || "",
+          final_price: product.final_price || product.finalPrice || "",
+          discripction: product.discripction || product.description || "",
           status: product.status || "active",
           image: null,
         });
-        setExistingImage(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${product.image}`);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching product:", err);
+        setExistingImage(getImageUrl(product.image?.url || product.image));
+      } catch (error) {
+        const { message } = handleApiError(error);
+        console.error("Error fetching product:", message);
         toast.error("❌ Failed to load product data.");
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchProduct();
   }, [productId]);
 
   const handleChange = (e) => {
@@ -106,26 +109,13 @@ export default function EditProduct() {
     }
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product/update/${productId}`, {
-        method: "PUT",
-        body: data,
-      });
-
-      if (res.ok) {
-        toast.success("✅ Product updated successfully!");
-        router.push("/admin/product");
-      } else {
-        const text = await res.text();
-        try {
-          const json = JSON.parse(text);
-          toast.error(`❌ Update failed: ${json.detail || "Unknown error"}`);
-        } catch {
-          toast.error(`❌ Update failed: ${text || res.statusText}`);
-        }
-      }
-    } catch (err) {
-      console.error("Update error:", err);
-      toast.error("❌ Something went wrong during update.");
+      const res = await productsAPI.update(productId, data);
+      toast.success("✅ Product updated successfully!");
+      router.push("/admin/product");
+    } catch (error) {
+      console.error("Update error:", error);
+      const { message } = handleApiError(error);
+      toast.error(`❌ Update failed: ${message}`);
     }
   };
 

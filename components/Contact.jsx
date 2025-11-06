@@ -24,14 +24,14 @@ const Contact = () => {
         setAlert({ message: '', type: '' });
 
         try {
-            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/contact/`, formData);
+            const res = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/contact/post`, formData);
             setAlert({
                 message: 'Message sent successfully! We will get back to you soon.',
                 type: 'success'
             });
             setFormData({ name: '', email: '', subject: '', message: '' });
         } catch (err) {
-            const errorMessage = err.response?.data?.detail ||
+            const errorMessage = err.response?.data?.message || err.response?.data?.detail ||
                 'Error sending message. Please try again later.';
             setAlert({
                 message: errorMessage,

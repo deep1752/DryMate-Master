@@ -19,30 +19,39 @@ const Footer = () => {
             </h4>
             <div className="contact-item">
               <div className="contact-icon">✉️</div>
-              <p>{admin?.email || 'info@drymate.com'}</p>
+              <p>{admin?.companyEmail || 'drymatemushroom007@gmail.com'}</p>
             </div>
             <div className="contact-item">
               <div className="contact-icon">📞</div>
-              <p>{mobileNumber}</p>
+              <p>{admin?.companyMobile || mobileNumber || "9636642396"}</p>
             </div>
 
             <div className="social-links-container">
-              {admin?.fb_link && (
-                <a href={admin.fb_link} target="_blank" rel="noreferrer" className="social-link facebook" aria-label="Facebook">
+              {admin?.fbLink && (
+                <a href={admin.fbLink} target="_blank" rel="noreferrer" className="social-link facebook" aria-label="Facebook">
                   <span className="social-icon">fb</span>
                 </a>
               )}
-              {admin?.insta_link && (
-                <a href={admin.insta_link} target="_blank" rel="noreferrer" className="social-link instagram" aria-label="Instagram">
+              {admin?.instaLink && (
+                <a href={admin.instaLink} target="_blank" rel="noreferrer" className="social-link instagram" aria-label="Instagram">
                   <span className="social-icon">ig</span>
                 </a>
               )}
-              {admin?.linkedin_link && (
-                <a href={admin.linkedin_link} target="_blank" rel="noreferrer" className="social-link linkedin" aria-label="LinkedIn">
+              {admin?.linkedinLink && (
+                <a href={admin.linkedinLink} target="_blank" rel="noreferrer" className="social-link linkedin" aria-label="LinkedIn">
                   <span className="social-icon">in</span>
                 </a>
               )}
-          
+              {/* {admin?.twitterLink && (
+                <a href={admin.twitterLink} target="_blank" rel="noreferrer" className="social-link twitter" aria-label="Twitter">
+                  <span className="social-icon">tw</span>
+                </a>
+              )}
+              {admin?.youtubeLink && (
+                <a href={admin.youtubeLink} target="_blank" rel="noreferrer" className="social-link youtube" aria-label="YouTube">
+                  <span className="social-icon">yt</span>
+                </a>
+              )} */}
             </div>
           </div>
 
@@ -62,7 +71,7 @@ const Footer = () => {
           {/* Newsletter */}
           <div className="footer-section newsletter-section">
             <h4 className="footer-heading">
-              <span className="heading-icon">📰</span> {admin?.brand_name || 'DryMate Mushrooms'}
+              <span className="heading-icon">📰</span> {admin?.companyName || 'DryMate Mushrooms'}
             </h4>
             <p className="newsletter-text">Subscribe for seasonal growing tips and special offers!</p>
             <form className="newsletter-form">
@@ -83,7 +92,7 @@ const Footer = () => {
       <div className="footer-bottom">
         <div className="footer-bottom-content">
           <p className="copyright">
-            © {new Date().getFullYear()} {admin?.brand_name || 'DryMate Mushrooms'}. All rights reserved.
+            © {new Date().getFullYear()} {admin?.companyName || 'DryMate Mushrooms'}. All rights reserved.
           </p>
         </div>
       </div>

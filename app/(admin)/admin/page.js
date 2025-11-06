@@ -35,27 +35,64 @@ export default function LoginPage() {
   const onSubmit = async (data) => {
     try {
       const res = await axios.post(`${process.env.NEXT_PUBLIC_API_BASE_URL}/auth/login`, data);
-      const token = res.data.access_token;
+      const token = res.data.token; // Updated from access_token to token
 
       const profile = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/users/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      const userRole = profile.data.role?.toLowerCase();
+      const userRole = profile.data.user?.role?.toLowerCase() || profile.data.role?.toLowerCase();
 
       if (userRole !== "admin") {
         toast.error("Access denied. Only admins can log in.");
         return;
       }
 
+      const userData = profile.data.user || profile.data;
+      
+      // Fetch company data and merge with user profile
+      let adminData = userData;
+      try {
+        const companyResponse = await axios.get(
+          `${process.env.NEXT_PUBLIC_API_BASE_URL}/company/info`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        
+        const companyData = companyResponse.data;
+        
+        // Merge user profile with company data
+        adminData = {
+          ...userData,
+          // Company info
+          companyName: companyData.brand_name,
+          companyEmail: companyData.email,
+          companyMobile: companyData.mobile_number,
+          companyAddress: companyData.address,
+          // Social links from company
+          twitterLink: companyData.twitter_link,
+          linkedinLink: companyData.linkedin_link,
+          fbLink: companyData.fb_link,
+          instaLink: companyData.insta_link,
+          youtubeLink: companyData.youtube_link,
+          // Business stats
+          experienceInYear: companyData.experience_in_year,
+          completeProjectNumbers: companyData.complete_project_numbers,
+          happyClientNumbers: companyData.happy_client_numbers,
+        };
+      } catch (companyError) {
+        console.warn('Could not fetch company data, using user profile only:', companyError.response?.status);
+      }
+
       localStorage.setItem("admin_token", token);
-      localStorage.setItem("admin_user", JSON.stringify(profile.data));
-      localStorage.setItem("admin_role", profile.data.role);
+      localStorage.setItem("admin_user", JSON.stringify(adminData));
+      localStorage.setItem("admin_role", userRole);
 
       toast.success("Login successful!");
       router.push("/admin/profile");
     } catch (err) {
-      const errorMessage = err?.response?.data?.detail || "Login failed. Please try again.";
+      const errorMessage = err?.response?.data?.message || err?.response?.data?.detail || "Login failed. Please try again.";
       toast.error(errorMessage);
     }
   };

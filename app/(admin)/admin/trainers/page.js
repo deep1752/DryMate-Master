@@ -9,6 +9,7 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { toast } from "sonner";
 import Image from "next/image";
+import { trainersAPI, getImageUrl, handleApiError } from '@/lib/api';
 
 export default function TrainerManager({ onEdit, onAdd }) {
   const router = useRouter();
@@ -19,17 +20,21 @@ export default function TrainerManager({ onEdit, onAdd }) {
   const [selectAll, setSelectAll] = useState(false);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/trainer/get_all`)
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchTrainers = async () => {
+      try {
+        const response = await trainersAPI.getAll();
+        const data = response.data.trainers || response.data;
         setTrainers(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching trainers:", err);
+      } catch (error) {
+        const { message } = handleApiError(error);
+        console.error("Error fetching trainers:", message);
         toast.error("❌ Failed to load trainers.");
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchTrainers();
   }, []);
 
   const handleDelete = async (idList) => {
@@ -39,26 +44,25 @@ export default function TrainerManager({ onEdit, onAdd }) {
     if (!confirmed) return;
 
     try {
-      const deleteRequests = idList.map((id) =>
-        fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/trainer/delete/${id}`, {
-          method: "DELETE",
-        })
-      );
-
-      const results = await Promise.all(deleteRequests);
-      const allSuccessful = results.every((res) => res.ok);
-
-      if (allSuccessful) {
-        toast.success("Trainer(s) deleted successfully!");
-        setTrainers(trainers.filter((trainer) => !idList.includes(trainer.id)));
-        setSelectedIds([]);
-        setSelectAll(false);
-      } else {
-        toast.error("⚠️ Some deletions failed.");
+      // Delete trainers one by one with proper error handling
+      for (const id of idList) {
+        try {
+          await trainersAPI.delete(id);
+        } catch (error) {
+          const { message } = handleApiError(error);
+          toast.error(`❌ Failed to delete trainer: ${message}`);
+          return; // Stop if one fails
+        }
       }
+
+      toast.success("✅ Trainer(s) deleted successfully!");
+      setTrainers(trainers.filter((trainer) => !idList.includes(trainer.id)));
+      setSelectedIds([]);
+      setSelectAll(false);
     } catch (err) {
       console.error("Error deleting trainer(s):", err);
-      toast.error("⚠️ Something went wrong.");
+      const { message } = handleApiError(err);
+      toast.error(`❌ Delete failed: ${message}`);
     }
   };
 
@@ -210,7 +214,7 @@ export default function TrainerManager({ onEdit, onAdd }) {
                   </td>
                   <td>
                     <Image
-                      src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${trainer.image}`}
+                      src={getImageUrl(trainer.image?.url || trainer.image)}
                       alt={trainer.name}
                       width={50}
                       height={50}

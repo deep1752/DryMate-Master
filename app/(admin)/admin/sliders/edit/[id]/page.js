@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { toast } from "sonner";
+import { slidersAPI, getImageUrl, handleApiError } from '@/lib/api';
 
 export default function EditSlider() {
   const [formData, setFormData] = useState({
@@ -20,12 +21,11 @@ export default function EditSlider() {
   useEffect(() => {
     if (!sliderId) return;
 
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/slider/get/${sliderId}`)
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to fetch slider");
-        return res.json();
-      })
-      .then((slider) => {
+    const fetchSlider = async () => {
+      try {
+        const response = await slidersAPI.getById(sliderId);
+        const slider = response.data.slider || response.data;
+        
         setFormData({
           title: slider.title || "",
           subtitle: slider.subtitle || "",
@@ -33,16 +33,17 @@ export default function EditSlider() {
           image: null,
         });
 
-        // 👇 Prefix with base URL for correct image preview
-        setExistingImage(`${process.env.NEXT_PUBLIC_API_BASE_URL}/${slider.image}`);
-
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching slider:", err);
+        setExistingImage(getImageUrl(slider.image?.url || slider.image));
+      } catch (error) {
+        const { message } = handleApiError(error);
+        console.error("Error fetching slider:", message);
         toast.error("❌ Failed to load slider data.");
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchSlider();
   }, [sliderId]);
 
   const handleChange = (e) => {
@@ -82,26 +83,13 @@ export default function EditSlider() {
     }
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/slider/update/${sliderId}`, {
-        method: "PUT",
-        body: data,
-      });
-
-      if (res.ok) {
-        toast.success("✅ Slider updated successfully!");
-        router.push("/admin/sliders");
-      } else {
-        const text = await res.text();
-        try {
-          const json = JSON.parse(text);
-          toast.error(`❌ Update failed: ${json.detail || "Unknown error"}`);
-        } catch {
-          toast.error(`❌ Update failed: ${text || res.statusText}`);
-        }
-      }
-    } catch (err) {
-      console.error("Update error:", err);
-      toast.error("❌ Something went wrong during update.");
+      const res = await slidersAPI.update(sliderId, data);
+      toast.success("✅ Slider updated successfully!");
+      router.push("/admin/sliders");
+    } catch (error) {
+      console.error("Update error:", error);
+      const { message } = handleApiError(error);
+      toast.error(`❌ Update failed: ${message}`);
     }
   };
 

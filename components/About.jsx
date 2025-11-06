@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import axios from "axios";
+import { trainersAPI, companyAPI, getImageUrl, handleApiError } from '../lib/api';
 
 const About = () => {
   const [adminDetails, setAdminDetails] = useState(null);
@@ -11,31 +12,34 @@ const About = () => {
   const [trainers, setTrainers] = useState([]);
   const [isTrainersLoading, setIsTrainersLoading] = useState(true); // 👈 New state for trainer loading
 
-  // Fetch admin details
+  // Fetch company details
   useEffect(() => {
-    const fetchAdminDetails = async () => {
+    const fetchCompanyDetails = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/get_by_id/1`);
-        const data = await response.json();
+        const response = await companyAPI.getInfo();
+        const data = response.data;
         setAdminDetails(data);
       } catch (error) {
-        console.error("Failed to fetch admin details:", error);
+        const { message } = handleApiError(error);
+        console.error("Failed to fetch company details:", message);
       }
     };
-    fetchAdminDetails();
+    fetchCompanyDetails();
   }, []);
 
   // Fetch team/expert count and trainers data
   useEffect(() => {
     const fetchTrainers = async () => {
       try {
-        const response = await axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/trainer/get_all`);
-        setTrainers(response.data);
-        setTrainersCount(response.data.length);
-      } catch (err) {
-        console.error("Error fetching trainers:", err);
+        const response = await trainersAPI.getAll();
+        const data = response.data.trainers || response.data;
+        setTrainers(data);
+        setTrainersCount(data.length);
+      } catch (error) {
+        const { message } = handleApiError(error);
+        console.error("Error fetching trainers:", message);
       } finally {
-        setIsTrainersLoading(false); // 👈 Set loading to false when done
+        setIsTrainersLoading(false);
       }
     };
     fetchTrainers();
@@ -150,7 +154,7 @@ const About = () => {
               <div className="col-4 col-sm-4 col-md-4 col-lg-4" key={trainer.id}>
                 <div className="team-item text-center p-2">
                   <img
-                    src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${trainer.image}`}
+                    src={getImageUrl(trainer.image?.url || trainer.image)}
                     alt={trainer.name}
                     className="rounded-circle shadow mb-2"
                     style={{ width: "100px", height: "100px", objectFit: "cover" }}

@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { trainersAPI, handleApiError } from '@/lib/api';
 
 const defaultTrainer = {
     name: "",
@@ -87,35 +88,45 @@ export default function AddTrainer() {
 
         setLoading(true);
         try {
+            // Process trainers one by one with proper error handling
             for (const trainer of trainers) {
-                const formData = new FormData();
-                formData.append("name", trainer.name);
-                formData.append("designation", trainer.designation);
-                formData.append("mobile_number", trainer.mobile_number);
-                formData.append("twitter_link", trainer.twitter_link);
-                formData.append("fb_link", trainer.fb_link);
-                formData.append("linkedin_link", trainer.linkedin_link);
-                formData.append("image", trainer.image);
+                try {
+                    const formData = new FormData();
+                    formData.append("name", trainer.name.trim());
+                    formData.append("designation", trainer.designation.trim());
+                    formData.append("mobile_number", trainer.mobile_number);
+                    formData.append("twitter_link", trainer.twitter_link || "");
+                    formData.append("fb_link", trainer.fb_link || "");
+                    formData.append("linkedin_link", trainer.linkedin_link || "");
+                    if (trainer.image) {
+                        formData.append("image", trainer.image);
+                    }
 
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/trainer/`, {
-                    method: "POST",
-                    body: formData,
-                });
+                    // Debug: Log what we're sending
+                    console.log('Sending trainer data:', {
+                        name: trainer.name,
+                        designation: trainer.designation,
+                        mobile_number: trainer.mobile_number,
+                        hasImage: !!trainer.image
+                    });
 
-                if (!res.ok) {
-                    const err = await res.text();
-                    toast.error(`❌ Failed to submit: ${trainer.name}`);
-                    console.error("Upload error:", err);
+                    const res = await trainersAPI.create(formData);
+                    console.log(`✅ Successfully added: ${trainer.name}`);
+                } catch (trainerError) {
+                    const { message } = handleApiError(trainerError);
+                    toast.error(`❌ Failed to add "${trainer.name}": ${message}`);
+                    console.error("Trainer upload error:", trainerError);
                     setLoading(false);
-                    return;
+                    return; // Stop processing if one trainer fails
                 }
             }
 
-            toast.success("✅ Trainers added successfully!");
+            toast.success("✅ All trainers added successfully!");
             router.push("/admin/trainers");
         } catch (error) {
             console.error("Submission error:", error);
-            toast.error("Something went wrong.");
+            const { message } = handleApiError(error);
+            toast.error(`❌ Submission failed: ${message}`);
         } finally {
             setLoading(false);
         }

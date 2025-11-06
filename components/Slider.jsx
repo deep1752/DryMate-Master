@@ -1,23 +1,28 @@
 'use client';
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import axios from 'axios';
+import { slidersAPI, getImageUrl, handleApiError } from '../lib/api';
 
 const Slider = () => {
   const [slides, setSlides] = useState([]);
   const [activeIndex, setActiveIndex] = useState(0);
-  const [isLoading, setIsLoading] = useState(true); // 👈 New state for loading
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    axios.get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/slider/get`)
-      .then(res => {
-        const activeSlides = res.data.filter(slide => slide.status === 'active');
-        setSlides(activeSlides);
-      })
-      .catch(err => console.error(err))
-      .finally(() => {
-        setIsLoading(false); // 👈 Set loading to false after the request is complete
-      });
+    const fetchSliders = async () => {
+      try {
+        const response = await slidersAPI.getAll({ status: 'active' });
+        const activeSlides = response.data.sliders || response.data;
+        setSlides(activeSlides.filter(slide => slide.status === 'active'));
+      } catch (error) {
+        const { message } = handleApiError(error);
+        console.error('Error fetching sliders:', message);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchSliders();
   }, []);
 
   useEffect(() => {
@@ -49,7 +54,7 @@ const Slider = () => {
           >
             <div 
               className="slide-background"
-              style={{ backgroundImage: `url(${process.env.NEXT_PUBLIC_API_BASE_URL}/${slide.image})` }}
+              style={{ backgroundImage: `url(${getImageUrl(slide.image?.url || slide.image)})` }}
             ></div>
             <div className="slide-overlay"></div>
             <div className="slide-text">

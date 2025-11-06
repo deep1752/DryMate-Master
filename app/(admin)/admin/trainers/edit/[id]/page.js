@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { toast } from "sonner";
+import { trainersAPI, getImageUrl, handleApiError } from '@/lib/api';
 
 export default function EditTrainer() {
     const [formData, setFormData] = useState({
@@ -23,30 +24,32 @@ export default function EditTrainer() {
     useEffect(() => {
         if (!trainerId) return;
 
-        fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/trainer/get_by_id/${trainerId}`)
-            .then((res) => {
-                if (!res.ok) throw new Error("Failed to fetch trainer");
-                return res.json();
-            })
-            .then((trainer) => {
+        const fetchTrainer = async () => {
+            try {
+                const response = await trainersAPI.getById(trainerId);
+                const trainer = response.data.trainer || response.data;
+                
                 setFormData({
                     name: trainer.name || "",
                     designation: trainer.designation || "",
-                    mobile_number: trainer.mobile_number || "",
-                    twitter_link: trainer.twitter_link || "",
-                    fb_link: trainer.fb_link || "",
-                    linkedin_link: trainer.linkedin_link || "",
+                    mobile_number: trainer.mobile_number || trainer.mobileNumber || "",
+                    twitter_link: trainer.twitter_link || trainer.twitterLink || "",
+                    fb_link: trainer.fb_link || trainer.fbLink || "",
+                    linkedin_link: trainer.linkedin_link || trainer.linkedinLink || "",
                     image: null,
                 });
 
-                setExistingImage(`${process.env.NEXT_PUBLIC_API_BASE_URL}${trainer.image}`);
-                setLoading(false);
-            })
-            .catch((err) => {
-                console.error("Error fetching trainer:", err);
+                setExistingImage(getImageUrl(trainer.image?.url || trainer.image));
+            } catch (error) {
+                const { message } = handleApiError(error);
+                console.error("Error fetching trainer:", message);
                 toast.error("❌ Failed to load trainer data.");
+            } finally {
                 setLoading(false);
-            });
+            }
+        };
+
+        fetchTrainer();
     }, [trainerId]);
 
     const handleChange = (e) => {
@@ -94,26 +97,13 @@ export default function EditTrainer() {
         }
 
         try {
-            const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/trainer/update/${trainerId}`, {
-                method: "PUT",
-                body: data,
-            });
-
-            if (res.ok) {
-                toast.success("✅ Trainer updated successfully!");
-                router.push("/admin/trainers");
-            } else {
-                const text = await res.text();
-                try {
-                    const json = JSON.parse(text);
-                    toast.error(`❌ Update failed: ${json.detail || "Unknown error"}`);
-                } catch {
-                    toast.error(`❌ Update failed: ${text || res.statusText}`);
-                }
-            }
-        } catch (err) {
-            console.error("Update error:", err);
-            toast.error("❌ Something went wrong during update.");
+            const res = await trainersAPI.update(trainerId, data);
+            toast.success("✅ Trainer updated successfully!");
+            router.push("/admin/trainers");
+        } catch (error) {
+            console.error("Update error:", error);
+            const { message } = handleApiError(error);
+            toast.error(`❌ Update failed: ${message}`);
         }
     };
 

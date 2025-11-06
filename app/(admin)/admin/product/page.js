@@ -9,6 +9,7 @@ import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { toast } from "sonner";
 import Image from "next/image";
+import { productsAPI, getImageUrl, handleApiError } from '@/lib/api';
 
 export default function ProductManager({ onEdit, onAdd }) {
   const router = useRouter();
@@ -22,17 +23,21 @@ export default function ProductManager({ onEdit, onAdd }) {
 
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product/get_all`)
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchProducts = async () => {
+      try {
+        const response = await productsAPI.getAll();
+        const data = response.data.products || response.data;
         setProducts(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching products:", err);
+      } catch (error) {
+        const { message } = handleApiError(error);
+        console.error("Error fetching products:", message);
         toast.error("❌ Failed to load products.");
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchProducts();
   }, []);
 
   const handleDelete = async (idList) => {
@@ -42,26 +47,25 @@ export default function ProductManager({ onEdit, onAdd }) {
     if (!confirmed) return;
 
     try {
-      const deleteRequests = idList.map((id) =>
-        fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product/delete/${id}`, {
-          method: "DELETE",
-        })
-      );
-
-      const results = await Promise.all(deleteRequests);
-      const allSuccessful = results.every((res) => res.ok);
-
-      if (allSuccessful) {
-        toast.success("Product(s) deleted successfully!");
-        setProducts(products.filter((p) => !idList.includes(p.id)));
-        setSelectedIds([]);
-        setSelectAll(false);
-      } else {
-        toast.error("⚠️ Some deletions failed.");
+      // Delete products one by one with proper error handling
+      for (const id of idList) {
+        try {
+          await productsAPI.delete(id);
+        } catch (error) {
+          const { message } = handleApiError(error);
+          toast.error(`❌ Failed to delete product: ${message}`);
+          return; // Stop if one fails
+        }
       }
+
+      toast.success("✅ Product(s) deleted successfully!");
+      setProducts(products.filter((p) => !idList.includes(p.id)));
+      setSelectedIds([]);
+      setSelectAll(false);
     } catch (err) {
       console.error("Error deleting product(s):", err);
-      toast.error("⚠️ Something went wrong.");
+      const { message } = handleApiError(err);
+      toast.error(`❌ Delete failed: ${message}`);
     }
   };
 
@@ -70,33 +74,25 @@ export default function ProductManager({ onEdit, onAdd }) {
 
     const formData = new FormData();
     formData.append("name", product.name);
-    formData.append("price", product.price);
-    formData.append("discount", product.discount);
-    formData.append("final_price", product.final_price);
+    formData.append("price", String(product.price));
+    formData.append("discount", String(product.discount));
+    formData.append("final_price", String(product.final_price));
     formData.append("discripction", product.discripction);
     formData.append("status", newStatus);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product/update/${product.id}`, {
-        method: "PUT",
-        body: formData,
-      });
+      await productsAPI.update(product.id, formData);
 
-      if (res.ok) {
-        setProducts((prev) =>
-          prev.map((p) =>
-            p.id === product.id ? { ...p, status: newStatus } : p
-          )
-        );
-        toast.success(`✅ Product is now ${newStatus}`);
-      } else {
-        const errData = await res.json();
-        console.error("Update error:", errData);
-        toast.error("❌ Failed to update status");
-      }
+      setProducts((prev) =>
+        prev.map((p) =>
+          p.id === product.id ? { ...p, status: newStatus } : p
+        )
+      );
+      toast.success(`✅ Product is now ${newStatus}`);
     } catch (err) {
       console.error("Error updating status:", err);
-      toast.error("⚠️ Something went wrong");
+      const { message } = handleApiError(err);
+      toast.error(`❌ Failed to update status: ${message}`);
     }
   };
 
@@ -272,7 +268,7 @@ export default function ProductManager({ onEdit, onAdd }) {
                     /> */}
 
                     <img
-                      src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${product.image}`}
+                      src={getImageUrl(product.image?.url || product.image)}
                       alt={product.name}
                       className="product-image"
                     />

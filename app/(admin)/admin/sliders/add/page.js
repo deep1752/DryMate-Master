@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { slidersAPI, handleApiError } from '@/lib/api';
 
 const defaultSlider = {
     title: "",
@@ -81,25 +82,24 @@ export default function AddSlider() {
                 formData.append("status", slider.status);
                 formData.append("image", slider.image);
 
-                const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/slider/post`, {
-                    method: "POST",
-                    body: formData,
-                });
-
-                if (!res.ok) {
-                    const err = await res.text();
-                    toast.error(`❌ Failed to submit: ${slider.title}`);
-                    console.error("Upload error:", err);
+                try {
+                    const res = await slidersAPI.create(formData);
+                    console.log(`✅ Successfully added slider: ${slider.title}`);
+                } catch (error) {
+                    const { message } = handleApiError(error);
+                    toast.error(`❌ Failed to add "${slider.title}": ${message}`);
+                    console.error("Slider upload error:", error);
                     setLoading(false);
-                    return;
+                    return; // Stop processing if one slider fails
                 }
             }
 
-            toast.success("✅ Sliders added successfully!");
+            toast.success("✅ All sliders added successfully!");
             router.push("/admin/sliders");
         } catch (error) {
             console.error("Submission error:", error);
-            toast.error("Something went wrong.");
+            const { message } = handleApiError(error);
+            toast.error(`❌ Submission failed: ${message}`);
         } finally {
             setLoading(false);
         }

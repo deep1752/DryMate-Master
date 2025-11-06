@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import { productsAPI, handleApiError } from '@/lib/api';
 
 const defaultProduct = {
   name: "",
@@ -31,7 +32,8 @@ export default function AddProduct() {
     // Calculate final_price when price or discount changes
     const price = parseFloat(updated[index].price) || 0;
     const discount = parseFloat(updated[index].discount) || 0;
-    updated[index].final_price = (price - discount).toFixed(2);
+    // Discount is a percentage, so calculate: price - (price * discount / 100)
+    updated[index].final_price = (price - (price * discount / 100)).toFixed(2);
 
     setProducts(updated);
 
@@ -74,7 +76,8 @@ export default function AddProduct() {
       if (!p.final_price.trim()) fieldErrors.final_price = "Final price is required";
       if (!p.discripction.trim()) fieldErrors.discripction = "Description is required";
       if (!p.status.trim()) fieldErrors.status = "Status is required";
-      if (!p.image) fieldErrors.image = "Image is required";
+      // Image is optional
+      // if (!p.image) fieldErrors.image = "Image is required";
       return fieldErrors;
     });
     setErrors(newErrors);
@@ -91,34 +94,50 @@ export default function AddProduct() {
     setLoading(true);
     try {
       for (const product of products) {
-        const formData = new FormData();
-        formData.append("name", product.name);
-        formData.append("price", product.price);
-        formData.append("discount", product.discount);
-        formData.append("final_price", product.final_price);
-        formData.append("discripction", product.discripction);
-        formData.append("status", product.status);
-        formData.append("image", product.image);
+        try {
+          const formData = new FormData();
+          formData.append("name", product.name.trim());
+          formData.append("price", String(parseFloat(product.price) || 0));
+          formData.append("discount", String(parseFloat(product.discount) || 0));
+          formData.append("final_price", String(parseFloat(product.final_price) || 0));
+          formData.append("discripction", product.discripction.trim());
+          formData.append("status", product.status || "active");
+          if (product.image) {
+            formData.append("image", product.image);
+          }
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product/post`, {
-          method: "POST",
-          body: formData,
-        });
+          // Debug: Log what we're sending
+          console.log('Sending product data:', {
+            name: product.name,
+            price: parseFloat(product.price) || 0,
+            discount: parseFloat(product.discount) || 0,
+            final_price: parseFloat(product.final_price) || 0,
+            discripction: product.discripction,
+            status: product.status,
+            hasImage: !!product.image
+          });
 
-        if (!res.ok) {
-          const err = await res.text();
-          toast.error(`❌ Failed to add: ${product.name}`);
-          console.error("Upload error:", err);
+          const res = await productsAPI.create(formData);
+          console.log(`✅ Successfully added: ${product.name}`);
+        } catch (productError) {
+          const { message } = handleApiError(productError);
+          console.error("Full error details:", {
+            status: productError.response?.status,
+            data: productError.response?.data,
+            message: message
+          });
+          toast.error(`❌ Failed to add "${product.name}": ${message}`);
           setLoading(false);
-          return;
+          return; // Stop processing if one product fails
         }
       }
 
-      toast.success("✅ Products added successfully!");
+      toast.success("✅ All products added successfully!");
       router.push("/admin/product");
     } catch (error) {
       console.error("Submission error:", error);
-      toast.error("Something went wrong.");
+      const { message } = handleApiError(error);
+      toast.error(`❌ Submission failed: ${message}`);
     } finally {
       setLoading(false);
     }

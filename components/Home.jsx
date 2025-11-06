@@ -8,6 +8,7 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useRouter } from "next/navigation";
 import { motion } from 'framer-motion';
+import { productsAPI, trainersAPI, companyAPI, getImageUrl, handleApiError } from '../lib/api';
 
 const Home = () => {
     const [adminDetails, setAdminDetails] = useState(null);
@@ -42,71 +43,62 @@ const Home = () => {
 
     // Fetch products
     useEffect(() => {
-        setProductsLoading(true);
-        fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product/get_all`)
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error(`HTTP error! status: ${res.status}`);
-                }
-                return res.json();
-            })
-            .then(data => {
+        const fetchProducts = async () => {
+            setProductsLoading(true);
+            try {
+                const response = await productsAPI.getAll({ status: 'active' });
+                const data = response.data.products || response.data;
                 const activeProducts = data.filter(p => p.status === 'active');
                 setProducts(activeProducts);
+            } catch (error) {
+                const { message } = handleApiError(error);
+                console.error('Failed to fetch products:', message);
+            } finally {
                 setProductsLoading(false);
-            })
-            .catch(err => {
-                console.error('Failed to fetch products:', err);
-                setProductsLoading(false);
-            });
+            }
+        };
+
+        fetchProducts();
     }, []);
 
     const handleBuyNow = () => {
         router.push(`/product`);
     };
 
-    // Fetch admin details
+    // Fetch company details
     useEffect(() => {
-        const fetchAdminDetails = async () => {
+        const fetchCompanyDetails = async () => {
             try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/admin/get_by_id/1`);
-                const data = await response.json();
+                const response = await companyAPI.getInfo();
+                const data = response.data;
                 setAdminDetails(data);
             } catch (error) {
-                console.error('Failed to fetch admin details:', error);
+                const { message } = handleApiError(error);
+                console.error('Failed to fetch company details:', message);
             }
         };
 
-        fetchAdminDetails();
-    }, []);
-
-    // Fetch trainers count
-    useEffect(() => {
-        const fetchTrainersCount = async () => {
-            try {
-                const response = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/trainer/get_all`);
-                const data = await response.json();
-                setTrainersCount(data.length);
-            } catch (error) {
-                console.error('Failed to fetch trainers count:', error);
-            }
-        };
-        fetchTrainersCount();
+        fetchCompanyDetails();
     }, []);
 
     // Fetch trainers
     useEffect(() => {
-        setTrainersLoading(true);
-        axios
-            .get(`${process.env.NEXT_PUBLIC_API_BASE_URL}/trainer/get_all`)
-            .then((res) => {
-                setTrainers(res.data);
+        const fetchTrainers = async () => {
+            setTrainersLoading(true);
+            try {
+                const response = await trainersAPI.getAll();
+                const data = response.data.trainers || response.data;
+                setTrainers(data);
+                setTrainersCount(data.length);
+            } catch (error) {
+                const { message } = handleApiError(error);
+                console.error("Error fetching trainers:", message);
+            } finally {
                 setTrainersLoading(false);
-            })
-            .catch((err) => {
-                console.error("Error fetching trainers:", err);
-                setTrainersLoading(false);
-            });
+            }
+        };
+
+        fetchTrainers();
     }, []);
 
     const settings = {
@@ -240,17 +232,17 @@ const Home = () => {
                         {products.map(product => (
                             <div className="slider-card" key={product.id}>
                                 <img
-                                    src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${product.image}`}
+                                    src={getImageUrl(product.image?.url || product.image)}
                                     alt={product.name}
                                     className="slider-image"
                                 />
                                 <h3 className="slider-name">{product.name}</h3>
                                 <p className="slider-price">
                                     <span className="original">₹{product.price}</span>{' '}
-                                    <span className="final">₹{product.final_price}</span>
+                                    <span className="final">₹{product.finalPrice}</span>
                                 </p>
                                 <p className="slider-discount">
-                                    Save ₹{product.price - product.final_price}
+                                    Save ₹{product.price - product.finalPrice}
                                 </p>
                                 <div
                                     style={{
@@ -392,7 +384,7 @@ const Home = () => {
                             <div className="col-4 col-sm-4 col-md-4 col-lg-4" key={trainer.id}>
                                 <div className="team-item text-center p-2">
                                     <img
-                                        src={`${process.env.NEXT_PUBLIC_API_BASE_URL}${trainer.image}`}
+                                        src={getImageUrl(trainer.image?.url || trainer.image)}
                                         alt={trainer.name}
                                         className="rounded-circle shadow mb-2"
                                         style={{ width: "100px", height: "100px", objectFit: "cover" }}
@@ -404,7 +396,7 @@ const Home = () => {
                                     <div>
                                         <a
                                             className="btn btn-light btn-sm btn-square rounded-circle mx-1"
-                                            href={trainer.twitter_link}
+                                            href={trainer.twitterLink}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                         >
@@ -412,7 +404,7 @@ const Home = () => {
                                         </a>
                                         <a
                                             className="btn btn-light btn-sm btn-square rounded-circle mx-1"
-                                            href={trainer.fb_link}
+                                            href={trainer.fbLink}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                         >

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { useAdmin } from '@/context/AdminContext';
+import { productsAPI, getImageUrl, handleApiError } from '@/lib/api';
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
@@ -11,12 +12,13 @@ const ProductPage = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/product/get_all`);
-        const data = await res.json();
+        const response = await productsAPI.getAll({ status: 'active' });
+        const data = response.data.products || response.data;
         const activeProducts = data.filter(p => p.status === 'active');
         setProducts(activeProducts);
-      } catch (err) {
-        console.error('Failed to fetch products:', err);
+      } catch (error) {
+        const { message } = handleApiError(error);
+        console.error('Failed to fetch products:', message);
       } finally {
         setIsLoading(false);
       }
@@ -25,7 +27,7 @@ const ProductPage = () => {
   }, []);
 
   const handleBuyNow = (product) => {
-    const message = `Hello, I'm interested in buying:\n\n🛍️ *${product.name}*\n💰 Price: ₹${product.final_price}\n🔖 Save ₹${product.price - product.final_price}\n📝 Description: ${product.discripction}`;
+    const message = `Hello, I'm interested in buying:\n\n🛍️ *${product.name}*\n💰 Price: ₹${product.finalPrice}\n🔖 Save ₹${product.price - product.finalPrice}\n📝 Description: ${product.description}`;
     const whatsappURL = `https://wa.me/${mobileNumber}?text=${encodeURIComponent(message)}`;
     window.open(whatsappURL, '_blank');
   };
@@ -54,7 +56,7 @@ const ProductPage = () => {
             {products.map(product => (
               <div className="product-card" key={product.id}>
                 <img
-                  src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${product.image}`}
+                  src={getImageUrl(product.image?.url || product.image)}
                   alt={product.name}
                   className="product-image"
                 />

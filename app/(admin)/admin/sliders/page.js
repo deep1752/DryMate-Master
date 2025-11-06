@@ -9,6 +9,7 @@ import autoTable from "jspdf-autotable";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
 import { toast } from "sonner";
+import { slidersAPI, getImageUrl, handleApiError } from '@/lib/api';
 
 export default function SliderManager({ onEdit, onAdd }) {
   const router = useRouter();
@@ -19,17 +20,22 @@ export default function SliderManager({ onEdit, onAdd }) {
   const [selectAll, setSelectAll] = useState(false);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/slider/get`)
-      .then((res) => res.json())
-      .then((data) => {
+    const fetchSliders = async () => {
+      try {
+        const response = await slidersAPI.getAll();
+        const data = response.data.sliders || response.data;
+        console.log('Fetched sliders data:', data);
         setSliders(data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Error fetching sliders:", err);
+      } catch (error) {
+        const { message } = handleApiError(error);
+        console.error("Error fetching sliders:", message);
         toast.error("❌ Failed to load sliders.");
+      } finally {
         setLoading(false);
-      });
+      }
+    };
+
+    fetchSliders();
   }, []);
 
   const handleDelete = async (idList) => {
@@ -39,26 +45,33 @@ export default function SliderManager({ onEdit, onAdd }) {
     if (!confirmed) return;
 
     try {
-      const deleteRequests = idList.map((id) =>
-        fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/slider/delete/${id}`, {
-          method: "DELETE",
-        })
-      );
-
-      const results = await Promise.all(deleteRequests);
-      const allSuccessful = results.every((res) => res.ok);
-
-      if (allSuccessful) {
-        toast.success("Slider(s) deleted successfully!");
-        setSliders(sliders.filter((slider) => !idList.includes(slider.id)));
-        setSelectedIds([]);
-        setSelectAll(false);
-      } else {
-        toast.error("⚠️ Some deletions failed.");
+      // Delete sliders one by one with proper error handling
+      for (const id of idList) {
+        try {
+          console.log('Attempting to delete slider with ID:', id);
+          await slidersAPI.delete(id);
+          console.log('Successfully deleted slider:', id);
+        } catch (error) {
+          console.error('Delete error details:', {
+            id,
+            status: error.response?.status,
+            data: error.response?.data,
+            url: error.config?.url
+          });
+          const { message } = handleApiError(error);
+          toast.error(`❌ Failed to delete slider: ${message}`);
+          return; // Stop if one fails
+        }
       }
+
+      toast.success("✅ Slider(s) deleted successfully!");
+      setSliders(sliders.filter((slider) => !idList.includes(slider.id)));
+      setSelectedIds([]);
+      setSelectAll(false);
     } catch (err) {
       console.error("Error deleting slider(s):", err);
-      toast.error("⚠️ Something went wrong.");
+      const { message } = handleApiError(err);
+      toast.error(`❌ Delete failed: ${message}`);
     }
   };
 
@@ -79,26 +92,18 @@ export default function SliderManager({ onEdit, onAdd }) {
     formData.append("status", newStatus);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/slider/update/${slider.id}`, {
-        method: "PUT",
-        body: formData,
-      });
-
-      if (res.ok) {
-        setSliders((prev) =>
-          prev.map((s) =>
-            s.id === slider.id ? { ...s, status: newStatus } : s
-          )
-        );
-        toast.success(`✅ Slider is now ${newStatus}`);
-      } else {
-        const errData = await res.json();
-        console.error("Update error:", errData);
-        toast.error("❌ Failed to update status");
-      }
+      await slidersAPI.update(slider.id, formData);
+      
+      setSliders((prev) =>
+        prev.map((s) =>
+          s.id === slider.id ? { ...s, status: newStatus } : s
+        )
+      );
+      toast.success(`✅ Slider is now ${newStatus}`);
     } catch (err) {
       console.error("Error updating status:", err);
-      toast.error("⚠️ Something went wrong");
+      const { message } = handleApiError(err);
+      toast.error(`❌ Failed to update status: ${message}`);
     }
   };
 
@@ -238,7 +243,7 @@ export default function SliderManager({ onEdit, onAdd }) {
                   </td>
                   <td>
                     <img
-                      src={`${process.env.NEXT_PUBLIC_API_BASE_URL}/${slider.image}`}
+                      src={getImageUrl(slider.image?.url || slider.image)}
                       alt={slider.title}
                       width={80}
                       height={60}
