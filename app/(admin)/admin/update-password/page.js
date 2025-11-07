@@ -15,7 +15,7 @@ const passwordSchema = z.object({
   newPassword: z.string().min(6, 'New password must be at least 6 characters'),
   confirmPassword: z.string().min(1, 'Please confirm your new password'),
 }).refine((data) => data.newPassword === data.confirmPassword, {
-  message: "Passwords don&apos;t match",
+  message: "Passwords don't match",
   path: ["confirmPassword"],
 });
 
@@ -168,7 +168,7 @@ export default function UpdatePassword() {
             <li>At least 6 characters long</li>
             <li>Use a combination of letters, numbers, and symbols</li>
             <li>Avoid using personal information</li>
-            <li>Don&apos;t reuse old passwords</li>
+            <li>Don't reuse old passwords</li>
           </ul>
         </div>
       </div>
