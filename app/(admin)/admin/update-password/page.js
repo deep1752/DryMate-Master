@@ -15,9 +15,10 @@ const passwordSchema = z.object({
   newPassword: z.string().min(6, 'New password must be at least 6 characters'),
   confirmPassword: z.string().min(1, 'Please confirm your new password'),
 }).refine((data) => data.newPassword === data.confirmPassword, {
-  message: "Passwords don't match",
+  message: "Passwords don&apos;t match",
   path: ["confirmPassword"],
 });
+
 
 export default function UpdatePassword() {
   const router = useRouter();
@@ -35,10 +36,10 @@ export default function UpdatePassword() {
 
   const onSubmit = async (data) => {
     setIsSubmitting(true);
-    
+
     try {
       const localToken = localStorage.getItem('admin_token');
-      
+
       if (!localToken) {
         toast.error('Please login again.');
         router.push('/admin');
@@ -66,9 +67,9 @@ export default function UpdatePassword() {
       router.push('/admin/profile');
     } catch (error) {
       console.error('Password update error:', error);
-      const errorMessage = 
-        error?.response?.data?.detail || 
-        error?.response?.data?.message || 
+      const errorMessage =
+        error?.response?.data?.detail ||
+        error?.response?.data?.message ||
         'Failed to update password. Please try again.';
       toast.error(errorMessage);
     } finally {
@@ -151,7 +152,7 @@ export default function UpdatePassword() {
                 'Update Password'
               )}
             </button>
-            
+
             <button
               type="button"
               onClick={() => router.push('/admin/profile')}
